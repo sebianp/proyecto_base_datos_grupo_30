@@ -1,4 +1,4 @@
-# Proyecto de Estudio!
+# Proyecto de Estudio
     
 **Estructura del documento principal:**
 
@@ -7,9 +7,10 @@
 **Asignatura**: Bases de Datos I (FaCENA-UNNE)
 
 **Integrantes**:
- - Sed vel lectus nec lectus placerat laoreet et sed est.
- - Sed ac justo ac mauris porttitor convallis non sit amet felis.
- - In tincidunt augue sed molestie malesuada.
+ - Aranda Vera, Vanesa Alejandra Samanta
+ - Prado, Sebastián
+ - Frias, Javier Antonio 
+ - Toledo, Agustina Ines
 
 **Año**: 2024
 
