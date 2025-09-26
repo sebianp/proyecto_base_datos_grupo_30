@@ -16,7 +16,7 @@ Carrera: Licenciatura en Sistemas de Información
  - Frias, Javier Antonio 
  - Toledo, Agustina Ines
 
-**Año**: 2024
+**Año**: 2025
 
 ## CAPÍTULO I: INTRODUCCIÓN
 
