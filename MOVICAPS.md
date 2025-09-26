@@ -1,10 +1,10 @@
 # Proyecto de Estudio
     
-**Universidad Nacional del Nordeste
+Universidad Nacional del Nordeste
 
 Facultad de Ciencias Exactas Naturales y Agrimensura
 
-Carrera: Licenciatura en Sistemas de Información**
+Carrera: Licenciatura en Sistemas de Información
 
 # PRESENTACIÓN (Título/Nombre Proyecto)
 
