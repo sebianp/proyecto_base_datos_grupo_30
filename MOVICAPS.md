@@ -1,6 +1,10 @@
 # Proyecto de Estudio
     
-**Estructura del documento principal:**
+**Universidad Nacional del Nordeste
+
+Facultad de Ciencias Exactas Naturales y Agrimensura
+
+Carrera: Licenciatura en Sistemas de Información**
 
 # PRESENTACIÓN (Título/Nombre Proyecto)
 
