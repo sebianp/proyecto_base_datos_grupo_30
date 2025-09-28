@@ -70,7 +70,7 @@ PRODUCT-CATEGORY  ||--|{  PRODUCT  : contains
 PRODUCT  ||--o{  ORDER-ITEM  : "ordered in"
 ```
 ### Diagrama relacional
-![diagrama_relacional](https://github.com/dovillegas/basesdatos_proyecto_estudio/blob/main/doc/image_relational.png)
+![diagrama_relacional](https://github.com/dovillegas/basesdatos_proyecto_estudio/blob/main/doc/erd_grupo30_2025.png)
 
 ### Diccionario de datos
 
