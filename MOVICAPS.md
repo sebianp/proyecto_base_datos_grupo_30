@@ -22,7 +22,7 @@
 
 ### Caso de estudio
 
-Maecenas molestie lacus tincidunt, placerat dolor et, ullamcorper erat. Mauris tortor nisl, ultricies ac scelerisque nec, feugiat in nibh. 
+Maecenas lacus tincidunt, placerat dolor et, ullamcorper erat. Mauris tortor nisl, ultricies ac scelerisque nec, feugiat in nibh. 
 
 ### Definición o planteamiento del problema
 
