@@ -194,31 +194,6 @@ SELECT
     PR.matricula AS Matricula,
     UM.idUnidad AS UnidadID,
     U.direccion AS DireccionUnidad,
-    STRING_AGG(S.nombre, ', ') AS Sintomas,
-    STRING_AGG(T.descripcion, ', ') AS Tratamientos
-FROM Atencion A
-INNER JOIN Paciente P ON A.idPaciente = P.idPaciente
-INNER JOIN Profesional PR ON A.idProfesional = PR.idProfesional
-INNER JOIN Diagnostico D ON A.idDiagnostico = D.idDiagnostico
-INNER JOIN UnidadMovil UM ON A.idUnidad = UM.idUnidad
-INNER JOIN UbicacionMovil U ON UM.id_ubicacion = U.id_ubicacion
-LEFT JOIN Atencion_Sintoma AS ASI ON A.idAtencion = ASI.idAtencion
-LEFT JOIN Sintoma S ON ASI.idSintoma = S.idSintoma
-LEFT JOIN Atencion_Tratamiento AS ATR ON A.idAtencion = ATR.idAtencion
-LEFT JOIN Tratamiento T ON ATR.idTratamiento = T.idTratamiento
-where A.idAtencion = 2
-GROUP BY 
-    P.nombreCompleto, D.descripcion, A.fechaHora, PR.nombreCompleto, PR.matricula,
-    UM.idUnidad, U.direccion;
-
-SELECT 
-    P.nombreCompleto AS NombrePaciente,
-    D.descripcion AS Diagnostico,
-    A.fechaHora AS FechaAtencion,
-    PR.nombreCompleto AS Profesional,
-    PR.matricula AS Matricula,
-    UM.idUnidad AS UnidadID,
-    U.direccion AS DireccionUnidad,
     -- Subconsulta para síntomas
     (SELECT STRING_AGG(S.nombre, ', ')
      FROM Atencion_Sintoma ASI
