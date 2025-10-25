@@ -3,11 +3,11 @@ CREATE DATABASE PROYECTO_MOVICAPS
 USE PROYECTO_MOVICAPS
 
 -- =============================================
--- CREACIÓN DE TABLAS DEL PROYECTO // GRUPO #30 // 2025
+-- CREACIoN DE TABLAS DEL PROYECTO // GRUPO #30 // 2025
 -- =============================================
 
 --Tabla del tipo de unidad (Puede ser general o alguna especialidad como: 
--- Odontologia, Pediatria, Vacunacion o Atención General
+-- Odontologia, Pediatria, Vacunacion o Atenciï¿½n General
 CREATE TABLE TipoUnidadMovil (
     idTipo INT IDENTITY(1,1) NOT NULL,
     descripcion VARCHAR(100) NOT NULL,
@@ -39,8 +39,8 @@ CREATE TABLE UbicacionMovil(
 	direccion VARCHAR(100) NOT NULL,
 	barrio_id INT NOT NULL,
 	CONSTRAINT PK_UbicacionMovil PRIMARY KEY (id_ubicacion),
-	CONSTRAINT FK_Ubicacion_Barrio FOREIGN KEY (barrio_id) REFERENCES Barrio(barrio_id),
-)
+	CONSTRAINT FK_Ubicacion_Barrio FOREIGN KEY (barrio_id) REFERENCES Barrio(barrio_id)
+);
 
 --tabla unidad movil
 CREATE TABLE UnidadMovil (
@@ -55,6 +55,10 @@ CREATE TABLE UnidadMovil (
     CONSTRAINT UQ_UnidadMovil_Patente UNIQUE (patente),
     CONSTRAINT CK_UnidadMovil_Capacidad CHECK (capacidadDiaria >= 0)
 );
+CREATE TABLE Especialidad (
+    idEspecialidad INT IDENTITY(1,1) PRIMARY KEY,
+    nombre VARCHAR(100) UNIQUE NOT NULL
+);
 
 --tabla profesional (no se tiene en cuenta el ingreso, ni los horarios, los profesionales pueden
 -- ir variando, no se controla eso, se controla principalmente las atenciones de los pacientes
@@ -63,13 +67,15 @@ CREATE TABLE UnidadMovil (
 CREATE TABLE Profesional (
     idProfesional INT IDENTITY(1,1) NOT NULL,
     nombreCompleto VARCHAR(150) NOT NULL,
-    especialidad VARCHAR(100) NOT NULL,
+    idEspecialidad INT NOT NULL,
     matricula VARCHAR(50) NOT NULL,
     contacto VARCHAR(100),
     CONSTRAINT PK_Profesional PRIMARY KEY (idProfesional),
     CONSTRAINT UQ_Profesional_Matricula UNIQUE (matricula),
+    CONSTRAINT FK_Especialidad FOREIGN KEY (idEspecialidad) REFERENCES Especialidad (idEspecialidad),
     CONSTRAINT CK_Profesional_Nombre CHECK (LEN(nombreCompleto) > 3)
 );
+
 
 --tabla paciente
 CREATE TABLE Paciente (
