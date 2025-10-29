@@ -41,13 +41,21 @@ Una **transacción anidada** ocurre cuando se inicia una nueva transacción dent
 
 ```sql
 BEGIN TRANSACTION;
-
 BEGIN TRY
-    INSERT INTO Paciente (...) VALUES (...);
-    INSERT INTO Atencion (...) VALUES (...);
-    UPDATE UnidadMovil SET capacidadDiaria = capacidadDiaria - 1 WHERE idUnidad = ...;
+    -- Insertar atención
+    INSERT INTO Atencion (fechaHora, idUnidad, idPaciente, idProfesional, idDiagnostico)
+    VALUES (GETDATE(), 5, 7, 5, 3);
+
+    DECLARE @idAtencion INT = SCOPE_IDENTITY();
+
+    -- Insertar síntomas asociados (provocar error poniendo sintomas que no existen)
+    INSERT INTO Atencion_Sintoma (idAtencion, idSintoma) VALUES (@idAtencion, 3);
+    INSERT INTO Atencion_Sintoma (idAtencion, idSintoma) VALUES (@idAtencion, 7);
+	INSERT INTO Atencion_Tratamiento (idAtencion, idTratamiento) VALUES (@idAtencion, 3);
+    INSERT INTO Atencion_Tratamiento (idAtencion, idTratamiento) VALUES (@idAtencion, 1);
 
     COMMIT TRANSACTION;
+    PRINT 'Atención y síntomas registrados correctamente.';
 END TRY
 BEGIN CATCH
     ROLLBACK TRANSACTION;
