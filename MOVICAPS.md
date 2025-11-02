@@ -53,7 +53,9 @@ Ut sed imperdiet risus. Maecenas vestibulum arcu vitae orci pretium pharetra. Su
 **TEMA 2 " ----- "** 
 Ut sed imperdiet risus. Maecenas vestibulum arcu vitae orci pretium pharetra. Suspendisse potenti. Fusce massa libero, fermentum eget elit in, tincidunt fermentum nunc. Cras imperdiet nisl elit, elementum gravida enim accumsan vel. Sed in sapien quis ante consectetur commodo id non nulla. Aenean lacinia, dolor convallis semper mattis, ante orci elementum nunc, eget feugiat risus neque in urna. Ut ut quam nec risus mollis convallis ornare ac odio. Phasellus efficitur posuere nibh, eget tempor augue pellentesque ac. Ut enim sem, imperdiet non est ut, blandit posuere dui. Curabitur at purus orci. Interdum et malesuada fames ac ante ipsum primis in faucibus.
 
-...
+**TEMA 3 "Manejo de transacciones y transacciones anidadas"** 
+El manejo adecuado de transacciones es un pilar clave en los sistemas de gestión de bases de datos relacionales, especialmente en contextos empresariales críticos donde la integridad y consistencia de los datos son absolutamente vitales. SQL Server, uno de los sistemas más utilizados a nivel global, provee sofisticadas herramientas para el control de transacciones, permitiendo a los desarrolladores y administradores definir y controlar las operaciones para garantizar que los datos se mantengan seguros, coherentes y recuperables ante errores o fallos del sistema. En este informe se profundiza en la teoría, la sintaxis y las mejores prácticas referentes al manejo de transacciones y transacciones anidadas en SQL Server, con un enfoque en los objetivos de comprender la consistencia y atomicidad, implementar transacciones simples y anidadas, y documentar casos de prueba y manejo de fallos.
+
 
 ## CAPÍTULO III: METODOLOGÍA SEGUIDA 
 
@@ -88,7 +90,11 @@ Proin aliquet mauris id ex venenatis, eget fermentum lectus malesuada. Maecenas 
 
 > Acceder a la siguiente carpeta para la descripción completa del tema [scripts-> tema_2](script/tema02_nombre_tema)
 
-... 
+### Desarrollo TEMA 2 "----"
+
+Proin aliquet mauris id ex venenatis, eget fermentum lectus malesuada. Maecenas a purus arcu. Etiam pellentesque tempor dictum. 
+
+> Acceder a la siguiente carpeta para la descripción completa del tema [scripts-> tema_3](script/tema3_Manejo_de_transacciones)
 
 
 ## CAPÍTULO V: CONCLUSIONES
@@ -99,9 +105,9 @@ Nunc sollicitudin purus quis ante sodales luctus. Proin a scelerisque libero, vi
 
 ## BIBLIOGRAFÍA DE CONSULTA
 
- 1. List item
- 2. List item
- 3. List item
+ 1. https://www.datacamp.com/es/blog/acid-transactions
+ 2. https://programacion.net/articulo/transacciones_en_sql_server_299
+ 3. https://learn.microsoft.com/es-es/sql/t-sql/language-elements/transactions-transact-sql?view=sql-server-ver17
  4. List item
  5. List item
 
