@@ -88,8 +88,9 @@ Proin aliquet mauris id ex venenatis, eget fermentum lectus malesuada. Maecenas 
 
 > Acceder a la siguiente carpeta para la descripción completa del tema [scripts-> tema_2](script/tema02_nombre_tema)
 
-... 
+### Desarrollo TEMA 4 Manejo de permisos a nivel de usuario de base de datos
 
+> Acceder a la siguiente carpeta para la descripción completa del tema [scripts-> tema_4](script/tema04_nombre_tema)
 
 ## CAPÍTULO V: CONCLUSIONES
 
