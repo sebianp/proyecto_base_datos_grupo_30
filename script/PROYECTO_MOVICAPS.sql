@@ -7,7 +7,7 @@ USE PROYECTO_MOVICAPS
 -- =============================================
 
 --Tabla del tipo de unidad (Puede ser general o alguna especialidad como: 
--- Odontologia, Pediatria, Vacunacion o Atenci�n General
+-- Odontologia, Pediatria, Vacunacion o Atencion General
 CREATE TABLE TipoUnidadMovil (
     idTipo INT IDENTITY(1,1) NOT NULL,
     descripcion VARCHAR(100) NOT NULL,
@@ -25,21 +25,12 @@ CREATE TABLE Ciudad(
 
 --tabla barrio
 CREATE TABLE Barrio (
-    barrio_id INT IDENTITY(1,1) NOT NULL,
+    idBarrio INT IDENTITY(1,1) NOT NULL,
     nombre_barrio VARCHAR(100) NOT NULL,
     ciudad_id INT NOT NULL,
-    CONSTRAINT PK_Barrio PRIMARY KEY (barrio_id),
+    CONSTRAINT PK_Barrio PRIMARY KEY (idBarrio),
 	CONSTRAINT FK_Barrio_Ciudad FOREIGN KEY (ciudad_id) REFERENCES Ciudad(ciudad_id),
     CONSTRAINT UQ_Barrio UNIQUE (nombre_barrio)
-);
-
---Tabla ubicacion (Determina los distintos lugares estrategicos en las que se pueden reubicar las unidades)
-CREATE TABLE UbicacionMovil(
-	id_ubicacion INT IDENTITY(1,1) NOT NULL,
-	direccion VARCHAR(100) NOT NULL,
-	barrio_id INT NOT NULL,
-	CONSTRAINT PK_UbicacionMovil PRIMARY KEY (id_ubicacion),
-	CONSTRAINT FK_Ubicacion_Barrio FOREIGN KEY (barrio_id) REFERENCES Barrio(barrio_id)
 );
 
 --tabla unidad movil
@@ -51,10 +42,26 @@ CREATE TABLE UnidadMovil (
 	id_ubicacion INT,
     CONSTRAINT PK_UnidadMovil PRIMARY KEY (idUnidad),
 	CONSTRAINT FK_Unidad_Tipo FOREIGN KEY (idTipo) REFERENCES TipoUnidadMovil(idTipo),
-	CONSTRAINT FK_Unidad_Ubicacion FOREIGN KEY (id_ubicacion) REFERENCES UbicacionMovil(id_ubicacion),
     CONSTRAINT UQ_UnidadMovil_Patente UNIQUE (patente),
     CONSTRAINT CK_UnidadMovil_Capacidad CHECK (capacidadDiaria >= 0)
 );
+
+--Tabla ubicacion (Determina los distintos lugares estrategicos en las que se pueden reubicar las unidades)
+CREATE TABLE UbicacionMovil(
+	idUbicacionMovil INT IDENTITY(1,1) NOT NULL,
+	idUnidad INT NOT NULL,
+    idBarrio INT NOT NULL,
+	direccion VARCHAR(100) NOT NULL,
+	fecha_ingreso DATE NOT NULL,
+	fecha_egreso DATE NULL,
+	CONSTRAINT PK_UbicacionMovil PRIMARY KEY (idUbicacionMovil),
+	CONSTRAINT FK_UnidadMovil FOREIGN KEY (idUnidad) REFERENCES UnidadMovil(idUnidad),
+	CONSTRAINT FK_Ubicacion_Barrio FOREIGN KEY (idBarrio) REFERENCES Barrio(idBarrio),
+	CONSTRAINT CK_Fecha_Ingreso_Egreso CHECK (fecha_egreso IS NULL OR fecha_egreso > fecha_ingreso)
+);
+
+
+
 CREATE TABLE Especialidad (
     idEspecialidad INT IDENTITY(1,1) PRIMARY KEY,
     nombre VARCHAR(100) UNIQUE NOT NULL
@@ -75,7 +82,6 @@ CREATE TABLE Profesional (
     CONSTRAINT FK_Especialidad FOREIGN KEY (idEspecialidad) REFERENCES Especialidad (idEspecialidad),
     CONSTRAINT CK_Profesional_Nombre CHECK (LEN(nombreCompleto) > 3)
 );
-
 
 --tabla paciente
 CREATE TABLE Paciente (
@@ -119,12 +125,12 @@ CREATE TABLE Tratamiento (
 CREATE TABLE Atencion (
     idAtencion INT IDENTITY(1,1) NOT NULL,
     fechaHora DATETIME NOT NULL DEFAULT GETDATE(),
-    idUnidad INT NOT NULL,
+    idUbicacionMovil INT NOT NULL,
     idPaciente INT NOT NULL,
     idProfesional INT NOT NULL,
     idDiagnostico INT NOT NULL,
     CONSTRAINT PK_Atencion PRIMARY KEY (idAtencion),
-    CONSTRAINT FK_Atencion_Unidad FOREIGN KEY (idUnidad) REFERENCES UnidadMovil(idUnidad),
+    CONSTRAINT FK_Atencion_Ubicacion FOREIGN KEY (idUbicacionMovil) REFERENCES UbicacionMovil(idUbicacionMovil),
     CONSTRAINT FK_Atencion_Paciente FOREIGN KEY (idPaciente) REFERENCES Paciente(idPaciente),
     CONSTRAINT FK_Atencion_Profesional FOREIGN KEY (idProfesional) REFERENCES Profesional(idProfesional),
     CONSTRAINT FK_Atencion_Diagnostico FOREIGN KEY (idDiagnostico) REFERENCES Diagnostico(idDiagnostico),

@@ -1,6 +1,5 @@
 use PROYECTO_MOVICAPS
 
---INSERCION DE DATOS BASICOS PARA EL PROYECTO
 --Tipo de Unidades Moviles
 INSERT INTO TipoUnidadMovil (descripcion) VALUES
 ('Odontología'),
@@ -34,32 +33,39 @@ INSERT INTO Barrio (nombre_barrio, ciudad_id) VALUES
 ('San Gerónimo', 1),
 ('Molina Punta', 1);
 
---Ubicacion del Movil de Atencion Medica
-INSERT INTO UbicacionMovil (direccion, barrio_id) VALUES
-('Av. 3 de Abril 1234', 1),
-('Calle 25 de Mayo 456', 2),
-('Ruta 5 km 12', 3),
-('Av. Armenia 789', 4),
-('Calle Mitre 101', 5),
-('Av. Maipú 2020', 6),
-('Calle Belgrano 303', 7),
-('Av. Independencia 404', 8),
-('Calle San Lorenzo 505', 9),
-('Av. Madariaga 606', 10);
+
+
+select * from UbicacionMovil
+
 
 --Unidad Movil de Atencion Primaria
 
-INSERT INTO UnidadMovil (patente, idTipo, capacidadDiaria, id_ubicacion) VALUES
-('ABC123', 1, 20, 1),
-('DEF456', 2, 15, 2),
-('GHI789', 3, 25, 3),
-('JKL012', 4, 30, 4),
-('MNO345', 4, 18, 5),
-('PQR678', 4, 22, 6),
-('STU901', 4, 10, 7),
-('VWX234', 2, 12, 8),
-('YZA567', 2, 16, 9),
-('BCD890', 1, 14, 10);
+INSERT INTO UnidadMovil (patente, idTipo, capacidadDiaria) VALUES
+('ABC123', 1, 20),
+('DEF456', 2, 15),
+('GHI789', 3, 25),
+('JKL012', 4, 30),
+('MNO345', 4, 18),
+('PQR678', 4, 22),
+('STU901', 4, 10),
+('VWX234', 2, 12),
+('YZA567', 2, 16),
+('BCD890', 1, 14);
+
+--Ubicacion del Movil de Atencion Medica
+
+INSERT INTO UbicacionMovil (idUnidad, idBarrio, direccion, fecha_ingreso, fecha_egreso ) VALUES
+(1, 1, 'Av. 3 de Abril 1234', '2025-09-01', null),
+(2, 2, 'Calle 25 de Mayo 456', '2025-09-02', null),
+(3, 3, 'Ruta 5 km 12', '2025-09-03', null),
+(4, 4, 'Av. Armenia 789', '2025-09-04', null),
+(5, 5, 'Calle Mitre 101', '2025-09-05', null),
+(6, 6, 'Av. Maipú 2020', '2025-09-06', null),
+(7, 7, 'Calle Belgrano 303', '2025-09-07', null),
+(8, 8, 'Av. Independencia 404', '2025-09-08', null),
+(9, 9, 'Calle San Lorenzo 505', '2025-09-09', null),
+(10, 10, 'Av. Madariaga 606', '2025-09-10', null);
+
 
 
 --Especialidades
@@ -142,7 +148,7 @@ INSERT INTO Diagnostico (descripcion) VALUES
 ('Resfriado');
 
 --Atenciones Médicas
-INSERT INTO Atencion (fechaHora, idUnidad, idPaciente, idProfesional, idDiagnostico) VALUES
+INSERT INTO Atencion (fechaHora, idUbicacionMovil, idPaciente, idProfesional, idDiagnostico) VALUES
 ('2025-10-01 09:00', 1, 1, 1, 1),
 ('2025-10-02 10:30', 2, 2, 2, 2),
 ('2025-10-03 11:15', 3, 3, 3, 3),
@@ -153,6 +159,14 @@ INSERT INTO Atencion (fechaHora, idUnidad, idPaciente, idProfesional, idDiagnost
 ('2025-10-08 13:20', 8, 8, 8, 8),
 ('2025-10-09 10:10', 9, 9, 9, 9),
 ('2025-10-10 16:00', 10, 10, 10, 10);
+
+select * from Atencion
+
+-- 1. Borrar todos los datos
+DELETE FROM Atencion;
+
+-- 2. Reiniciar el contador IDENTITY a 0 (el próximo será 1)
+DBCC CHECKIDENT ('Atencion', RESEED, 0);
 
 
 --Atencion-Simtomas 
@@ -185,29 +199,4 @@ INSERT INTO Atencion_Tratamiento (idAtencion, idTratamiento) VALUES
 (10, 1), (10, 5);
 
 
---PRUEBA DE QUE LOS DATOS SE CARGARON (Ejecutarla luego de insertar los datos tabla por tabla en orden)
-SELECT 
-    P.nombreCompleto AS NombrePaciente,
-    D.descripcion AS Diagnostico,
-    A.fechaHora AS FechaAtencion,
-    PR.nombreCompleto AS Profesional,
-    PR.matricula AS Matricula,
-    UM.idUnidad AS UnidadID,
-    U.direccion AS DireccionUnidad,
-    -- Subconsulta para síntomas
-    (SELECT STRING_AGG(S.nombre, ', ')
-     FROM Atencion_Sintoma ASI
-     INNER JOIN Sintoma S ON ASI.idSintoma = S.idSintoma
-     WHERE ASI.idAtencion = A.idAtencion) AS Sintomas,
-    -- Subconsulta para tratamientos
-    (SELECT STRING_AGG(T.descripcion, ', ')
-     FROM Atencion_Tratamiento ATR
-     INNER JOIN Tratamiento T ON ATR.idTratamiento = T.idTratamiento
-     WHERE ATR.idAtencion = A.idAtencion) AS Tratamientos
-FROM Atencion A
-INNER JOIN Paciente P ON A.idPaciente = P.idPaciente
-INNER JOIN Profesional PR ON A.idProfesional = PR.idProfesional
-INNER JOIN Diagnostico D ON A.idDiagnostico = D.idDiagnostico
-INNER JOIN UnidadMovil UM ON A.idUnidad = UM.idUnidad
-INNER JOIN UbicacionMovil U ON UM.id_ubicacion = U.id_ubicacion;
 
