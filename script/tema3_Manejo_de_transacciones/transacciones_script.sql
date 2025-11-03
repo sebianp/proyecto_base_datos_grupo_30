@@ -2,30 +2,34 @@
 --Objetivo: 
 --registrar una atencion medica junto con los síntomas del paciente, y asegurarte de que no se registre nada si falla alguna parte.
 -- Transaccion para Atencion, Sintomas y tratamientos
+-- Transaccion para Atencion, Sintomas y tratamientos (En proceso)
 BEGIN TRANSACTION;
 BEGIN TRY
-    --Obtener idUnidad desde la ubicación
+    --Obtener idUnidad desde la ubicación actual
     DECLARE @idUnidad INT;
-    SELECT @idUnidad = idUnidad FROM UbicacionMovil WHERE idUbicacionMovil = 1;
+	DECLARE @idUbicacionMovil INT;
+    SELECT @idUnidad = idUnidad, @idUbicacionMovil = idUbicacionMovil FROM UbicacionMovil WHERE idUbicacionMovil = 1;
 
     --Verificar capacidad Disponible antes de hacer la atencion
     DECLARE @capacidad INT;
     SELECT @capacidad = capacidadDiaria FROM UnidadMovil WHERE idUnidad = @idUnidad;
+	--set @capacidad = 0; --Error provocado: falta de capacidad
+
+	 IF @capacidad <= 0
+        THROW 50001, 'La unidad móvil no tiene capacidad disponible.', @idUnidad;
 
     -- Insertar atención
     INSERT INTO Atencion (fechaHora, idUbicacionMovil, idPaciente, idProfesional, idDiagnostico)
-    VALUES (GETDATE(), 5, 7, 5, 3);
+    VALUES (GETDATE(), @idUbicacionMovil, 2, 2, 2);
 
     DECLARE @idAtencion INT = SCOPE_IDENTITY();
 
     -- Insertar síntomas asociados (provocar error poniendo sintomas que no existen)
     INSERT INTO Atencion_Sintoma (idAtencion, idSintoma) VALUES (@idAtencion, 3);
-    INSERT INTO Atencion_Sintoma (idAtencion, idSintoma) VALUES (@idAtencion, 7);
 	INSERT INTO Atencion_Tratamiento (idAtencion, idTratamiento) VALUES (@idAtencion, 3);
-    INSERT INTO Atencion_Tratamiento (idAtencion, idTratamiento) VALUES (@idAtencion, 1);
 
     --Una vez realizada la atención se actualiza la capacidad diaria
-    UPDATE UnidadMovil SET capacidadDiaria = capacidadDiaria - 1 WHERE idUnidad = 1;
+    UPDATE UnidadMovil SET capacidadDiaria = capacidadDiaria - 1 WHERE idUnidad = @idUnidad;
 
     COMMIT TRANSACTION;
     PRINT 'Atención y síntomas registrados correctamente.';
@@ -36,39 +40,26 @@ BEGIN CATCH
 END CATCH;
 go
 
---Provocar un error: Se modifica un sintoma y se coloca un idSintoma no registrado.
-BEGIN TRANSACTION;
-BEGIN TRY
-    -- Insertar atención
-    INSERT INTO Atencion (fechaHora, idUbicacionMovil, idPaciente, idProfesional, idDiagnostico)
-    VALUES (GETDATE(), 7, 2, 5, 3);
-
-    DECLARE @idAtencion INT = SCOPE_IDENTITY();
-
-    -- Insertar síntomas asociados (provocar error poniendo un sintoma que no existe)
-    INSERT INTO Atencion_Sintoma (idAtencion, idSintoma) VALUES (@idAtencion, 3);
-    INSERT INTO Atencion_Sintoma (idAtencion, idSintoma) VALUES (@idAtencion, 17); --Error Provocado (No existe sintoma 17)
-	INSERT INTO Atencion_Tratamiento (idAtencion, idTratamiento) VALUES (@idAtencion, 3);
-    INSERT INTO Atencion_Tratamiento (idAtencion, idTratamiento) VALUES (@idAtencion, 1);
-
-    COMMIT TRANSACTION;
-    PRINT 'Atención y síntomas registrados correctamente.';
-END TRY
-BEGIN CATCH
-    ROLLBACK TRANSACTION;
-    PRINT 'Error detectado. Se canceló la transacción.';
-END CATCH;
+select * from UnidadMovil as un inner join UbicacionMovil as ub on un.idUnidad = ub.idUnidad
 go
+
+select a.idAtencion, a.idPaciente, a.idProfesional , a.idUbicacionMovil, a.fechaHora
+from Atencion as a
+order by a.fechaHora desc
+go
+
+select *
+from Diagnostico
+
+select *
+from Atencion as a left join Atencion_Tratamiento as ta on a.idAtencion = ta.idAtencion
+left join Tratamiento as t on ta.idTratamiento = t.idTratamiento
+
 
 --Comprobacion viendo por fecha se puede ver si se agrego o no, dependiendo si se provoco un fallo
 select a.idAtencion, a.idPaciente, a.idProfesional , a.idUnidad, a.fechaHora
 from Atencion as a
 order by a.fechaHora desc
-
---Controles
-
-select *
-from Diagnostico
 
 --No debe haber nulos
 select *
