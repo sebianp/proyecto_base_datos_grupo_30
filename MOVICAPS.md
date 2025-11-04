@@ -87,7 +87,31 @@ Acceso al documento [PDF](doc/diccionario_datos.pdf) del diccionario de datos.
 
 ### Desarrollo TEMA 1 "----"
 
-Fusce auctor finibus lectus, in aliquam orci fermentum id. Fusce sagittis lacus ante, et sodales eros porta interdum. Donec sed lacus et eros condimentum posuere. 
+**FUNCION**
+
+Al igual que las funciones de los lenguajes de programación, las **funciones** definidas por el usuario de SQL Server son rutinas que aceptan parámetros, realizan una acción, como un cálculo complejo, y devuelven el resultado de esa acción como un valor. El valor devuelto puede ser un valor escalar único o un conjunto de resultados.
+
+
+**Ventajas de las funciones definidas por el usuario**
+
+¿Por qué usar funciones definidas por el usuario (UDF)?
+
+
+**Programación modular**. Puede crear la función una vez, almacenarla en la base de datos y llamarla desde el programa tantas veces como desee. Las funciones definidas por el usuario se pueden modificar, independientemente del código de origen del programa.
+
+
+**Ejecución más rápida.** Al igual que los procedimientos almacenados, las funciones definidas por el usuario de Transact-SQL reducen el costo de compilación del código de Transact-SQL almacenando los planes en la caché y reutilizándolos para ejecuciones repetidas. Esto significa que la función definida por el usuario no tiene que volver a analizarse y volver a personalizarse con cada uso, lo que da lugar a tiempos de ejecución más rápidos.
+
+
+Las funciones de idioma común en tiempo de ejecución (CLR) ofrecen una ventaja de rendimiento importante sobre las funciones de Transact-SQL para tareas de cálculo, manipulación de cadenas y lógica de negocios. Las funciones de Transact-SQL se adecuan mejor a la lógica intensiva del acceso a datos.
+
+
+**Reducción del tráfico de red**. Una operación que filtra datos basándose en restricciones complejas que no se puede expresar en una sola expresión escalar se puede expresar como una función. La función se puede invocar luego en la cláusula WHERE para reducir el número de filas que se envían al cliente.
+
+
+**Importante**
+
+Las funciones definidas por el usuario de Transact-SQL en consultas solo se pueden ejecutar en un único subproceso (plan de ejecución en serie). Por tanto, el uso de UDF impide el procesamiento de consultas en paralelo. Para obtener más información sobre el procesamiento de consultas en paralelo, vea la Guía de arquitectura de procesamiento de consultas.
 
 > Acceder a la siguiente carpeta para la descripción completa del tema [scripts-> tema_1](script/tema01_nombre_tema)
 

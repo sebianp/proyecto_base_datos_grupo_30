@@ -1,4 +1,5 @@
  --Procedimiento para obtener unidades móviles por barrio (actuales)
+ 
 CREATE PROCEDURE SP_ObtenerUnidadesPorBarrioActual
     @p_idBarrio INT
 AS
@@ -23,8 +24,10 @@ BEGIN
         AND uc.fecha_egreso IS NULL; -- Solo ubicaciones actuales 
 END;
 
-
+--uso
  EXEC SP_ObtenerUnidadesPorBarrioActual 10;
+
+
 
  -- Función para obtener el historial de atenciones de un paciente
 CREATE FUNCTION FN_HistorialAtencionesPaciente (@p_idPaciente INT)
