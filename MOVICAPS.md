@@ -53,7 +53,8 @@ Ut sed imperdiet risus. Maecenas vestibulum arcu vitae orci pretium pharetra. Su
 **TEMA 2 " ----- "** 
 Ut sed imperdiet risus. Maecenas vestibulum arcu vitae orci pretium pharetra. Suspendisse potenti. Fusce massa libero, fermentum eget elit in, tincidunt fermentum nunc. Cras imperdiet nisl elit, elementum gravida enim accumsan vel. Sed in sapien quis ante consectetur commodo id non nulla. Aenean lacinia, dolor convallis semper mattis, ante orci elementum nunc, eget feugiat risus neque in urna. Ut ut quam nec risus mollis convallis ornare ac odio. Phasellus efficitur posuere nibh, eget tempor augue pellentesque ac. Ut enim sem, imperdiet non est ut, blandit posuere dui. Curabitur at purus orci. Interdum et malesuada fames ac ante ipsum primis in faucibus.
 
-...
+**TEMA 4 "Manejo de permisos a nivel de usuarios de base de datos"**
+Es el proceso mediante el cual se asignan, revocan o deniegan permisos específicos a usuarios o roles dentro de una base de datos, con el objetivo de controlar el acceso a objetos como tablas, vistas, procedimientos almacenados, funciones, esquemas y demás recursos. Permite minimizar los riesgos de modificaciones no autorizadas, garantizar la integridad de los datos y establecer un entorno seguro, donde cada usuario accede únicamente a los recursos necesarios para cumplir su función.
 
 ## CAPÍTULO III: METODOLOGÍA SEGUIDA 
 
@@ -89,6 +90,7 @@ Proin aliquet mauris id ex venenatis, eget fermentum lectus malesuada. Maecenas 
 > Acceder a la siguiente carpeta para la descripción completa del tema [scripts-> tema_2](script/tema02_nombre_tema)
 
 ### Desarrollo TEMA 4 Manejo de permisos a nivel de usuario de base de datos
+
 
 > Acceder a la siguiente carpeta para la descripción completa del tema [scripts-> tema_4](script/tema04_nombre_tema)
 
