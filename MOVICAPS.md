@@ -90,7 +90,7 @@ Proin aliquet mauris id ex venenatis, eget fermentum lectus malesuada. Maecenas 
 > Acceder a la siguiente carpeta para la descripción completa del tema [scripts-> tema_2](script/tema02_nombre_tema)
 
 ### Desarrollo TEMA 4 Manejo de permisos a nivel de usuario de base de datos
-
+La asignación de permisos a nivel de usuario en una base de datos es fundamental para garantizar la seguridad y la integridad de la información. Al restringir el acceso únicamente a los usuarios autorizados, se minimiza el riesgo de modificaciones indebidas o errores operativos.
 
 > Acceder a la siguiente carpeta para la descripción completa del tema [scripts-> tema_4](script/tema04_nombre_tema)
 
