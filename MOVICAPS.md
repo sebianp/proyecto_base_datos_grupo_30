@@ -104,17 +104,17 @@ Las funciones de idioma común en tiempo de ejecución (CLR) ofrecen una ventaja
 
 **Importante**
 
-Las funciones definidas por el usuario de Transact-SQL en consultas solo se pueden ejecutar en un único subproceso (plan de ejecución en serie). Por tanto, el uso de UDF impide el procesamiento de consultas en paralelo. Para obtener más información sobre el procesamiento de consultas en paralelo, vea la Guía de arquitectura de procesamiento de consultas.
+Las funciones definidas por el usuario de Transact-SQL en consultas solo se pueden ejecutar en un único subproceso (plan de ejecución en serie). Por tanto, el uso de UDF impide el procesamiento de consultas en paralelo.
 
 **Tipos de funciones**
 
 **Funciones escalares**
 
-Las funciones escalares definidas por el usuario devuelven un único valor de datos del tipo definido en la cláusula RETURNS. En una función escalar insertada, el valor escalar es el resultado de una sola instrucción. Para una función escalar de varias instrucciones, el cuerpo de la función puede contener una serie de instrucciones de Transact-SQL que devuelven el único valor. El tipo devuelto puede ser de cualquier tipo de datos excepto text, ntext, image, cursory timestamp. Para obtener ejemplos, consulte Creación de funciones definidas por el usuario (motor de base de datos).
+Las funciones escalares definidas por el usuario devuelven un único valor de datos del tipo definido en la cláusula RETURNS. En una función escalar insertada, el valor escalar es el resultado de una sola instrucción. Para una función escalar de varias instrucciones, el cuerpo de la función puede contener una serie de instrucciones de Transact-SQL que devuelven el único valor. El tipo devuelto puede ser de cualquier tipo de datos excepto text, ntext, image, cursory timestamp.
 
 **Funciones con valores de tabla**
 
-Las funciones con valores de tabla definidas por el usuario (TVF) devuelven un tipo de datos table. Las funciones con valores de tabla insertadas no tienen cuerpo; la tabla es el conjunto de resultados de una sola instrucción SELECT. Para obtener ejemplos, consulte Creación de funciones definidas por el usuario (motor de base de datos).
+Las funciones con valores de tabla definidas por el usuario (TVF) devuelven un tipo de datos table. Las funciones con valores de tabla insertadas no tienen cuerpo; la tabla es el conjunto de resultados de una sola instrucción SELECT. 
 
 **Funciones del sistema**
 
@@ -159,9 +159,35 @@ Cuando las aplicaciones cliente llaman a procedimientos y mantienen las operacio
 
 De forma predeterminada, los procedimientos almacenados mejoran el rendimiento porque el motor de base de datos compila la consulta y almacena un plan de ejecución la primera vez que se ejecutan, el cual se reutiliza en llamadas posteriores para ahorrar tiempo de procesamiento. Sin embargo, si existen cambios importantes en las tablas o datos subyacentes, este plan precompilado puede volverse ineficiente, haciendo que el procedimiento se ejecute con lentitud. En tales casos, es necesario volver a crear el procedimiento para forzar la generación de un nuevo plan optimizado y restaurar el rendimiento.
 
+**Tipos de procedimientos almacenados**
 
+**Definida por el usuario**
 
+Un procedimiento definido por el usuario se puede crear en una base de datos definida por el usuario o en todas las bases de datos del sistema excepto en la base de datos Resource. El procedimiento se puede desarrollar en Transact-SQL o como referencia a un método de Common Language Runtime (CLR) de Microsoft .NET Framework.
 
+**Temporario**
+
+Los procedimientos temporales son una forma de procedimientos definidos por el usuario. Los procedimientos temporales son como un procedimiento permanente, salvo que se almacenan en tempdb. Hay dos tipos de procedimientos temporales: locales y globales. Se diferencian entre sí por los nombres, la visibilidad y la disponibilidad. Los procedimientos temporales locales tienen como primer carácter de sus nombres un solo signo de número (#); solo son visibles en la conexión actual del usuario y se eliminan cuando se cierra la conexión. Los procedimientos temporales globales presentan dos signos de número (##antes del nombre; son visibles para cualquier usuario después de su creación y se eliminan al final de la última sesión en la que se usa el procedimiento.
+
+**Sistema**
+
+Los procedimientos del sistema se incluyen con el motor de base de datos. Están almacenados físicamente en la base de datos interna y oculta Resourcey se muestran de forma lógica en el esquema sys de cada base de datos definida por el sistema y por el usuario. Además, la base de datos msdb también contiene procedimientos almacenados del sistema en el esquema dbo que se usan para programar alertas y trabajos. Dado que los procedimientos del sistema empiezan con el prefijo sp\_, le recomendamos que no use este prefijo cuando asigne un nombre a los procedimientos definidos por el usuario.
+
+SQL Server admite los procedimientos del sistema que proporcionan una interfaz de SQL Server a los programas externos para varias actividades de mantenimiento. Estos procedimientos extendidos usan el prefijo xp\_.
+
+**Definido por el usuario extendido**
+
+Los procedimientos extendidos permiten crear rutinas externas en un lenguaje de programación, como C. Estos procedimientos son bibliotecas DLL que una instancia de SQL Server puede cargar y ejecutar de forma dinámica.
+
+**Comparación entre Procedimientos y Funciones Almacenadas**
+
+La deferencia fundamental entre un Procedimiento Almacenado y una Función Definida por el Usuario (UDF) reside en su capacidad para modificar la base de datos y cómo se integran en las consultas.
+
+El propósito principal de un Procedimiento Almacenado es ejecutar un conjunto de acciones en el servidor, generalmente para implementar la lógica de negocio y las operaciones CRUD. Por ello, los procedimientos pueden realizar cambios definitivos en la base de datos (como INSERT, UPDATE, DELETE) y tienen permitido el control explícito de transacciones (COMMIT, ROLLBACK). En cambio, las Funciones Almacenadas están diseñadas para cálculos o la lectura de datos sin alteración; están estrictamente prohibidas de realizar cualquier manipulación de datos o tener efectos secundarios, lo que asegura la integridad de la base de datos.
+
+En cuanto al retorno de valores, la diferencia también es significativa. Una Función Almacenada tiene la restricción de devolver siempre un único valor (ya sea un valor escalar simple o un único conjunto de resultados en formato TABLE). Por otro lado, un Procedimiento Almacenado es más flexible, ya que puede devolver múltiples conjuntos de resultados de varias consultas, además de múltiples parámetros de salida y un valor de estado para indicar el éxito o fracaso de su ejecución.
+
+Finalmente, la manera de invocación en el código es la característica más visible. Las Funciones Almacenadas son altamente integrables, pudiendo ser utilizadas directamente dentro de sentencias SELECT, WHERE o HAVING como cualquier función de sistema nativa, o como fuente de datos en la cláusula FROM. Por el contrario, los Procedimientos Almacenados no son aptos para la composición de consultas y deben ser invocados de manera independiente mediante el comando EXECUTE o EXEC.
 
 > Acceder a la siguiente carpeta para la descripción completa del tema [scripts-> tema_1](script/tema01_nombre_tema)
 
