@@ -91,6 +91,9 @@ Proin aliquet mauris id ex venenatis, eget fermentum lectus malesuada. Maecenas 
 
 ### Desarrollo TEMA 4 Manejo de permisos a nivel de usuario de base de datos
 La asignación de permisos a nivel de usuario en una base de datos es fundamental para garantizar la seguridad y la integridad de la información. Al restringir el acceso únicamente a los usuarios autorizados, se minimiza el riesgo de modificaciones indebidas o errores operativos.
+Por ejemplo:
+Los analistas de datos pueden ser asignados a un rol con permisos de solo lectura, permitiéndoles realizar consultas sin alterar los datos.
+El administrador de la base de datos, en cambio, requiere permisos completos para gestionar estructuras, usuarios y operaciones críticas.
 
 > Acceder a la siguiente carpeta para la descripción completa del tema [scripts-> tema_4](script/tema04_nombre_tema)
 
