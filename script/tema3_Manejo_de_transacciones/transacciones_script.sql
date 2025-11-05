@@ -2,7 +2,6 @@
 --Objetivo: 
 --registrar una atencion medica junto con los síntomas del paciente, y asegurarte de que no se registre nada si falla alguna parte.
 -- Transaccion para Atencion, Sintomas y tratamientos
--- Transaccion para Atencion, Sintomas y tratamientos (En proceso)
 BEGIN TRANSACTION;
 BEGIN TRY
     --Obtener idUnidad desde la ubicación actual
@@ -13,14 +12,14 @@ BEGIN TRY
     --Verificar capacidad Disponible antes de hacer la atencion
     DECLARE @capacidad INT;
     SELECT @capacidad = capacidadDiaria FROM UnidadMovil WHERE idUnidad = @idUnidad;
-	--set @capacidad = 0; --Error provocado: falta de capacidad
+	set @capacidad = 0; --Error provocado: falta de capacidad
 
 	 IF @capacidad <= 0
         THROW 50001, 'La unidad móvil no tiene capacidad disponible.', @idUnidad;
 
     -- Insertar atención
     INSERT INTO Atencion (fechaHora, idUbicacionMovil, idPaciente, idProfesional, idDiagnostico)
-    VALUES (GETDATE(), @idUbicacionMovil, 2, 2, 2);
+    VALUES (GETDATE(), @idUbicacionMovil, 3, 2, 1);
 
     DECLARE @idAtencion INT = SCOPE_IDENTITY();
 
@@ -37,24 +36,9 @@ END TRY
 BEGIN CATCH
     ROLLBACK TRANSACTION;
     PRINT 'Error detectado. Se canceló la transacción.';
+    PRINT ERROR_MESSAGE(); --muestra el mensaje del THROW
 END CATCH;
 go
-
-select * from UnidadMovil as un inner join UbicacionMovil as ub on un.idUnidad = ub.idUnidad
-go
-
-select a.idAtencion, a.idPaciente, a.idProfesional , a.idUbicacionMovil, a.fechaHora
-from Atencion as a
-order by a.fechaHora desc
-go
-
-select *
-from Diagnostico
-
-select *
-from Atencion as a left join Atencion_Tratamiento as ta on a.idAtencion = ta.idAtencion
-left join Tratamiento as t on ta.idTratamiento = t.idTratamiento
-
 
 --Comprobacion viendo por fecha se puede ver si se agrego o no, dependiendo si se provoco un fallo
 select a.idAtencion, a.idPaciente, a.idProfesional , a.idUnidad, a.fechaHora
@@ -68,7 +52,6 @@ left join Tratamiento as t on ta.idTratamiento = t.idTratamiento
 
 --Ejemplo Utilizando SAVE TRANSACTION
 BEGIN TRANSACTION;
-
 BEGIN TRY
     --insertar paciente
     DECLARE @idPaciente INT;

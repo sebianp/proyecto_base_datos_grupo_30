@@ -9,6 +9,18 @@ Una **transacción** es una unidad lógica de trabajo que agrupa una o más oper
 - **Aislamiento**: Las transacciones concurrentes no interfieren entre sí.
 - **Durabilidad**: Una vez confirmada, la transacción es permanente.
 
+## Sintaxis básica
+
+```sql
+BEGIN TRANSACTION;
+
+-- Operaciones SQL (INSERT, UPDATE, DELETE...)
+
+COMMIT TRANSACTION;   -- Confirma los cambios
+-- o
+ROLLBACK TRANSACTION; -- Revierte todo
+```
+
 ## Modos de transacción en SQL Server
 
 - **Transacciones de confirmación automática**: Cada instrucción `INSERT`, `UPDATE` o `DELETE` se ejecuta como una transacción individual.
