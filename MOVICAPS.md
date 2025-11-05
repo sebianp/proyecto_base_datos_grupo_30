@@ -98,6 +98,25 @@ El administrador de la base de datos, en cambio, requiere permisos completos par
 #### Aplicación en nuestro proyecto 
 Nos enfocamos en implementar una estrategia de permisos basada en el motor de base de datos, utilizando usuarios y roles definidos a nivel de base de datos. Para ello configuró la base de datos en modo mixto (autenticación integrada con windows y por usuario de base de datos).
 
+**Permisos a nivel de Usuarios de base de datos**
+El manejo de permisos a nivel de usuario es el conjunto de acciones destinadas a controlar qué operaciones puede realizar cada usuario dentro de una base de datos. Esto incluye la capacidad de leer información, modificar registros, ejecutar procedimientos almacenados, crear o alterar objetos, entre otras tareas. La asignación de estos permisos se realiza de forma explícita, ya sea directamente al usuario o, preferentemente, a través de roles que agrupan funciones similares.
+En nuestro proyecto se definieron dos perfiles de usuario con distintos niveles de acceso:
+
+**Analista de datos:** cuenta con permisos de solo lectura, lo que le permite consultar información sin modificarla.
+**Administrador de base de datos:** requiere permisos completos para gestionar estructuras, usuarios y operaciones críticas.
+Para implementar esta estrategia, se configuraron los inicios de sesión y usuarios correspondientes:
+```USE PROYECTO_MOVICAPS;
+
+-- Crear inicios de sesión
+CREATE LOGIN administrador WITH PASSWORD = '#*1userAdm1n';
+CREATE LOGIN analista WITH PASSWORD = '*#2userAn4l1st';
+
+-- Crear usuarios de base de datos asociados
+CREATE USER administrador FOR LOGIN administrador;
+CREATE USER analista FOR LOGIN analista;
+```
+**Asignación de permisos**
+
 > Acceder a la siguiente carpeta para la descripción completa del tema [scripts-> tema_4](script/tema04_nombre_tema)
 
 ## CAPÍTULO V: CONCLUSIONES
