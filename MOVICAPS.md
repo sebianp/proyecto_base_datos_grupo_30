@@ -116,6 +116,7 @@ CREATE USER administrador FOR LOGIN administrador;
 CREATE USER analista FOR LOGIN analista;
 ```
 **Asignación de permisos**
+Una vez creados los usuarios, se les concede acceso a la base de datos. Sin embargo, no reciben automáticamente permisos sobre los objetos (tablas, vistas, procedimientos, etc.). Por lo tanto, se deben asignar explícitamente los permisos necesarios según el rol funcional de cada usuario.
 
 > Acceder a la siguiente carpeta para la descripción completa del tema [scripts-> tema_4](script/tema04_nombre_tema)
 
