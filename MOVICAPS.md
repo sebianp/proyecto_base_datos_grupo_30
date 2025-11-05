@@ -95,6 +95,9 @@ Por ejemplo:
 Los analistas de datos pueden ser asignados a un rol con permisos de solo lectura, permitiéndoles realizar consultas sin alterar los datos.
 El administrador de la base de datos, en cambio, requiere permisos completos para gestionar estructuras, usuarios y operaciones críticas.
 
+#### Aplicación en nuestro proyecto 
+Nos enfocamos en implementar una estrategia de permisos basada en el motor de base de datos, utilizando usuarios y roles definidos a nivel de base de datos. Para ello configuró la base de datos en modo mixto (autenticación integrada con windows y por usuario de base de datos).
+
 > Acceder a la siguiente carpeta para la descripción completa del tema [scripts-> tema_4](script/tema04_nombre_tema)
 
 ## CAPÍTULO V: CONCLUSIONES
