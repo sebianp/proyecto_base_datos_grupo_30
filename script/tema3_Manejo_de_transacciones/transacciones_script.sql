@@ -50,6 +50,7 @@ select *
 from Atencion as a left join Atencion_Tratamiento as ta on a.idAtencion = ta.idAtencion
 left join Tratamiento as t on ta.idTratamiento = t.idTratamiento
 
+--======TRANSACCION UTILIZANDO SAVEPOINT =========
 --Ejemplo Utilizando SAVE TRANSACTION
 BEGIN TRANSACTION;
 BEGIN TRY
@@ -97,7 +98,7 @@ BEGIN CATCH
     PRINT ERROR_MESSAGE();
 END CATCH;
 
-
+--======TRANSACCIONES ANIDADAS =========
 --Transaccion anidada de Atencion: Creación de paciente en principal y cargar atención en la anidada
 BEGIN TRY
     BEGIN TRANSACTION;  -- Transacción principal
@@ -113,15 +114,19 @@ BEGIN TRY
     DECLARE @idUnidad INT;
     SELECT @idUnidad = idUnidad FROM UbicacionMovil WHERE idUbicacionMovil = 1;
 
-    --Verificar capacidad Disponible antes de hacer la atencion
-    DECLARE @capacidad INT;
-    SELECT @capacidad = capacidadDiaria FROM UnidadMovil WHERE idUnidad = @idUnidad;
+    --Transaccion 2 (anidada 1): Verificar disponibilidad de capacidad de atención
+    BEGIN TRANSACTION;  --Inicio transaccion anidada 1
+        --Verificar capacidad Disponible antes de hacer la atencion
+        DECLARE @capacidad INT;
+        SELECT @capacidad = capacidadDiaria FROM UnidadMovil WHERE idUnidad = @idUnidad;
 
-    IF @capacidad <= 0
-        THROW 50001, 'La unidad móvil no tiene capacidad disponible.', 1;
+        IF @capacidad <= 0
+            THROW 50001, 'La unidad móvil no tiene capacidad disponible.', 1;
 
-    --Transaccion 2(anidada): registrar atención
-    BEGIN TRANSACTION;  --Inicio transaccion anidada
+    COMMIT TRANSACTION;  -- Transacción anidada 2 fin
+
+    --Transaccion 3 (anidada 2): registrar atención
+    BEGIN TRANSACTION;--Inicio transaccion anidada 2
 
         DECLARE @idAtencion INT;
         INSERT INTO Atencion (fechaHora, idUbicacionMovil, idPaciente, idProfesional, idDiagnostico)
@@ -136,16 +141,16 @@ BEGIN TRY
         INSERT INTO Atencion_Tratamiento (idAtencion, idTratamiento)
         VALUES (@idAtencion, 1), (@idAtencion, 2);
 
-    COMMIT TRANSACTION;  -- Transacción anidada
+    COMMIT TRANSACTION;--Transacción anidada 3 fin
 
     --Una vez realizada la atención se actualiza la capacidad diaria
     UPDATE UnidadMovil SET capacidadDiaria = capacidadDiaria - 1 WHERE idUnidad = 1;
 
-    COMMIT TRANSACTION;  --Transacción principal
+    COMMIT TRANSACTION;  --Transacción principal commit
     PRINT 'Transacción completada con éxito';
 END TRY
 BEGIN CATCH
     ROLLBACK TRANSACTION;
     PRINT 'Error en la transacción. Operación revertida.';
-    PRINT ERROR_MESSAGE();
+    PRINT ERROR_MESSAGE(); --Se muestra el error del THROW en capacidad (para este caso, pero puede ser cualquier otro)
 END CATCH;
