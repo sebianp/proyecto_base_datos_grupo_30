@@ -93,7 +93,7 @@ Proin aliquet mauris id ex venenatis, eget fermentum lectus malesuada. Maecenas 
 
 ### Desarrollo TEMA 3 "Manejo de transacciones y transacciones anidadas"
 
-Una transacción es una unidad de trabajo indivisible que agrupa una o varias operaciones SQL, tratadas como un solo bloque lógico. El éxito o fracaso de una transacción determina si los cambios hechos a la base de datos son persistidos **(commit)** o revertidos **(rollback)**.
+Una transacción es una unidad de trabajo indivisible que agrupa una o varias operaciones SQL, tratadas como un solo bloque lógico. El éxito o fracaso de una transacción determina si los cambios hechos a la base de datos son persistidos `COMMIT` o revertidos `ROLLBACK`.
 En SQL Server, toda operación de modificación de datos está implicada en una transacción. Por defecto, cada sentencia SQL es autocommit (transacción automática). Sin embargo, para escenarios complejos, se requiere la definición de **transacciones explícitas**, especialmente para asegurar la integridad en operaciones que involucran múltiples pasos.
 
  ## Las Garantías ACID
@@ -116,12 +116,22 @@ SQL Server proporciona un conjunto de comandos Transact-SQL para definir y contr
 
 `COMMIT` [TRANSACTION] [nombre]: Confirma la transacción, haciendo permanentes los cambios.
 
-`ROLLBACK` [TRANSACTION] [nombre | savepoint]: Revierte la transacción o hasta un punto de guardado específico.
+`ROLLBACK` [TRANSACTION] [nombre | savepoint]: Revierte la transacción completa o hasta un punto de guardado específico (savepoint).
 
 `SAVE TRANSACTION` [savepoint]: Define un punto de guardado intermedio para permitir rollbacks parciales.
 
 `@@TRANCOUNT`: Es la **Variable de sistema** que indica el número de transacciones activas anidadas en la sesión actual
-La variable **@@TRANCOUNT** permite saber cuántos niveles de anidamiento transaccional existen en la sesión. Cada vez que se inicia una transacción, el contador se incrementa, y con cada COMMIT se reduce en uno.
+La variable **@@TRANCOUNT** permite saber cuántos niveles de anidamiento transaccional existen en la sesión. Cada vez que se inicia una transacción, el contador se incrementa, con cada `COMMIT` se reduce en uno y con `ROLLBACK` se cancelan todas.
+```sql
+BEGIN TRANSACTION;
+PRINT @@TRANCOUNT; -- Devuelve 1
+
+BEGIN TRANSACTION;
+PRINT @@TRANCOUNT; -- Devuelve 2
+
+ROLLBACK TRANSACTION;
+PRINT @@TRANCOUNT; -- Devuelve 0 (se cancelan todas)
+```
 
 ## Sintaxis básica
 
@@ -142,8 +152,8 @@ Se puede tener múltiples SAVE TRANSACTION, pero solo podés hacer ROLLBACK a un
 
 **Control de Errores en Transacciones: TRY…CATCH**
 
-SQL Server implementa el manejo estructurado de errores mediante las construcciones TRY...CATCH. Este mecanismo captura excepciones y permite evitar estados inválidos o transacciones abiertas, lo cual es clave para garantizar la consistencia y robustez del sistema.
-Dentro de los bloques `CATCH`, se pueden usar funciones como `ERROR_NUMBER()`, `ERROR_MESSAGE()`, `ERROR_LINE()`, entre otras, para obtener información detallada del error ocurrido.
+SQL Server implementa el manejo estructurado de errores mediante las construcciones `TRY...CATCH`. Este mecanismo captura excepciones y permite evitar estados inválidos o transacciones abiertas, lo cual es clave para garantizar la consistencia y robustez del sistema.
+Dentro de los bloques `CATCH`, se pueden usar funciones como `ERROR_NUMBER()`, `ERROR_MESSAGE()`, `ERROR_LINE()`, entre otras, para obtener información detallada del error ocurrido. Sin `TRY...CATCH`, si ocurre un error (ej. violación de clave foránea, constraint, falta de capacidad), la transacción se cancela abruptamente y el usuario solo ve un mensaje genérico. Si una transacción falla y no se maneja, puede quedar abierta y bloquear recursos (tablas, filas), Con `TRY...CATCH`, siempre aseguramos un `ROLLBACK` o `COMMIT`, evitando bloqueos. Dentro del `CATCH`, podés verificar si la transacción está dañada (-1) o aún válida (1) utilizando `XACT_STATE()`
 
 ```sql
 BEGIN TRY
@@ -159,7 +169,11 @@ BEGIN CATCH --Mostrar errores justo al ROLLBACK que revierte toda la transaccion
     ROLLBACK TRANSACTION;
     PRINT 'Error: ' + ERROR_MESSAGE();
 END CATCH;
+
 ```
+
+**Uso de XACT_STATE()**
+`XACT_STATE()` es una función interna de SQL Server que te dice en qué estado se encuentra la transacción actual dentro de tu sesión. Es clave para manejar errores de forma segura en bloques `TRY...CATCH`. Si devuelve 1, se puede decidir confirmar o revertir. Si devuelve -1, no hay opción: solo se puede hacer ROLLBACK. Cuando su valor es 1 nos dice que hay una transacción activa y está en estado válido, se puede hacer `COMMIT` o `ROLLBACK`. Si su valor es 0 no hay ninguna transacción activa en la sesión. Si su valor es -1 hay una transacción activa pero está en estado dañado (por un error grave), por lo tanto solo se puede hacer `ROLLBACK`.
 
 ## Modos de transacción en SQL Server
 
@@ -234,8 +248,8 @@ Cualquier `ROLLBACK`, sin savepoint, revierte toda la cadena de transacciones an
 
 - Limita el acceso a los datos solo a las operaciones que se confirman (`commit`), añadiendo una capa de seguridad crucial en sistemas con datos sensibles.
 
-
-> Acceder a la siguiente carpeta para la descripción completa del tema [scripts-> tema_3](script/tema3_Manejo_de_transacciones)
+**SCRIPT con ejemplos aplicados al proyecto**
+> Acceder a la siguiente carpeta [scripts-> tema_3](script/tema3_Manejo_de_transacciones)
 
 
 ## CAPÍTULO V: CONCLUSIONES

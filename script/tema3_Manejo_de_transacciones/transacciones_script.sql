@@ -1,8 +1,65 @@
 
---Objetivo: 
+/*TRANSACCIONES DE CONFIRMACION AUTOMATICA (Transacciones impliticas autocommit)*/
+
+--Cada instrucción es una transacción independiente
+--Si se ejecuta correctamente, se confirma automáticamente
+--Si falla, se revierte automáticamente.
+--Es el modo por defecto en SQL Server.
+
+-- Insertar un paciente
+INSERT INTO Paciente (nombreCompleto, dni, fechaNacimiento, sexo, contacto)
+VALUES ('Lucía Fernández', '98765432', '1992-07-10', 'Femenino','luci_fernad10z@email.com');
+
+-- Insertar una atención
+INSERT INTO Atencion (fechaHora, idUbicacionMovil, idPaciente, idProfesional, idDiagnostico)
+VALUES (GETDATE(), 1, 1, 2, 1);
+
+-- Actualizar capacidad de la unidad móvil
+UPDATE UnidadMovil
+SET capacidadDiaria = capacidadDiaria - 1
+WHERE idUnidad = 1;
+-- Cada una de estas operaciones se confirma automáticamente si no hay errores.
+
+
+/*TRANSACCION IMPLICITA*/
+SET IMPLICIT_TRANSACTIONS ON; --se activa el modo de transacciones implícitas
+
+--Primera transacción: se inicia automáticamente con este INSERT
+INSERT INTO Paciente (nombreCompleto, dni, fechaNacimiento, sexo, contacto)
+VALUES ('María López', '45678901', '1985-03-15', 'Femenino', 'mariaa.lopz@email.com');
+
+--Nada se confirma todavía, la transacción sigue abierta, podemos hacer más operaciones o revertir
+--Si decidimos confirmar, ejecutamos COMMIT TRANSACTION;
+--Confirmamos manualmente
+COMMIT TRANSACTION;
+
+--Segunda transacción: se inicia automáticamente con este UPDATE
+UPDATE UnidadMovil
+SET capacidadDiaria = capacidadDiaria - 1
+WHERE idUnidad = 1;
+
+--Confirmamos manualmente
+COMMIT TRANSACTION;
+
+-- Tercera transacción: se inicia automáticamente con este INSERT
+INSERT INTO Atencion (fechaHora, idUbicacionMovil, idPaciente, idProfesional, idDiagnostico)
+VALUES (GETDATE(), 1, 1, 2, 1);
+
+--si ocurre un error, podemos revertir
+--se revierte solo la transacción que está actualmente abierta (la última instrucción que inició una transacción y todavía no fue confirmada).
+ROLLBACK TRANSACTION; 
+
+SET IMPLICIT_TRANSACTIONS OFF; --se desactiva el modo de transacciones implícitas
+
+
+
+
+--====== TRANSACCION EXPLITICA CON TRY CATCH ======
+--Objetivo de la transacción: 
 --registrar una atencion medica junto con los síntomas del paciente, y asegurarte de que no se registre nada si falla alguna parte.
 -- Transaccion para Atencion, Sintomas y tratamientos
-BEGIN TRANSACTION;
+
+BEGIN TRANSACTION; --INICIO EXPLICITO DE LA TRANSACCION
 BEGIN TRY
     --Obtener idUnidad desde la ubicación actual
     DECLARE @idUnidad INT;
@@ -12,7 +69,7 @@ BEGIN TRY
     --Verificar capacidad Disponible antes de hacer la atencion
     DECLARE @capacidad INT;
     SELECT @capacidad = capacidadDiaria FROM UnidadMovil WHERE idUnidad = @idUnidad;
-	set @capacidad = 0; --Error provocado: falta de capacidad
+	set @capacidad = 0; --Error provocado: falta de capacidad (fuerza un error controlado para mostrar cómo se maneja la transacción)
 
 	 IF @capacidad <= 0
         THROW 50001, 'La unidad móvil no tiene capacidad disponible.', @idUnidad;
@@ -23,18 +80,18 @@ BEGIN TRY
 
     DECLARE @idAtencion INT = SCOPE_IDENTITY();
 
-    -- Insertar síntomas asociados (provocar error poniendo sintomas que no existen)
+    --Insertar síntomas asociados (provocar error poniendo sintomas que no existen)
     INSERT INTO Atencion_Sintoma (idAtencion, idSintoma) VALUES (@idAtencion, 3);
 	INSERT INTO Atencion_Tratamiento (idAtencion, idTratamiento) VALUES (@idAtencion, 3);
 
     --Una vez realizada la atención se actualiza la capacidad diaria
     UPDATE UnidadMovil SET capacidadDiaria = capacidadDiaria - 1 WHERE idUnidad = @idUnidad;
 
-    COMMIT TRANSACTION;
+    COMMIT TRANSACTION; --si todo sale bien se confirma la transacción
     PRINT 'Atención y síntomas registrados correctamente.';
 END TRY
 BEGIN CATCH
-    ROLLBACK TRANSACTION;
+    ROLLBACK TRANSACTION; --si ocurre un error, se revierte todo y se muestra el mensaje.
     PRINT 'Error detectado. Se canceló la transacción.';
     PRINT ERROR_MESSAGE(); --muestra el mensaje del THROW
 END CATCH;
@@ -71,13 +128,14 @@ BEGIN TRY
 
     --Ingreso de sintomas
     INSERT INTO Atencion_Sintoma (idAtencion, idSintoma)
-    VALUES (@idAtencion, 1);
+    VALUES (@idAtencion, 1); 
+    --Si modificamos el 1 por un idSintoma que no existe, se provoca un error, esto hará que se revierta solo la atención, pero el paciente quedará registrado.
 
     --Ingreso de tratamiento
     INSERT INTO Atencion_Tratamiento (idAtencion, idTratamiento)
     VALUES (@idAtencion, 1);
 
-    COMMIT TRANSACTION;
+    COMMIT TRANSACTION; --si todo sale bien se confirma la transacción
     PRINT 'Transacción completada con éxito';
 END TRY
 BEGIN CATCH
@@ -141,7 +199,7 @@ BEGIN TRY
         INSERT INTO Atencion_Tratamiento (idAtencion, idTratamiento)
         VALUES (@idAtencion, 1), (@idAtencion, 2);
 
-    COMMIT TRANSACTION;--Transacción anidada 3 fin
+    COMMIT TRANSACTION;--Transacción anidada 3 (fin)
 
     --Una vez realizada la atención se actualiza la capacidad diaria
     UPDATE UnidadMovil SET capacidadDiaria = capacidadDiaria - 1 WHERE idUnidad = 1;
