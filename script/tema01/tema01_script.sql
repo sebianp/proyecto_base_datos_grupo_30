@@ -48,3 +48,31 @@ BEGIN
     WHERE idPaciente = @p_idPaciente;
 END;
 
+/*Inserción de Lotes de Datos
+ Lote de Inserción Directa con Sentencias INSERT (Guardar Script)
+Este script utiliza sentencias DML directas.*/
+
+-- SCRIPT LOTE A: Inserción directa en la tabla Paciente (Guardar como script)
+INSERT INTO Paciente (nombreCompleto, dni, fechaNacimiento, sexo, contacto) 
+VALUES 
+('Ramirez, Elias', '10111222', '19900515', 'Masculino', '3624123456'),
+('Pereyra, Daniela', '20222333', '19871120', 'Femenino', '3624987654');
+
+/* Lote de Inserción Invocando a los Procedimientos Creados
+Este script demuestra la modularidad y reutilización del código encapsulado en el procedimiento almacenado.*/
+
+-- SCRIPT LOTE B: Inserción invocando el procedimiento almacenado
+EXEC SP_InsertarPaciente 
+    @p_nombreCompleto = 'Castro, Hector',
+    @p_dni = '30333444',
+    @p_fechaNacimiento = '20050101',
+    @p_sexo = 'Masculino',
+    @p_contacto = '3624001122';
+
+EXEC SP_InsertarPaciente 
+    @p_nombreCompleto = 'Silva, Romina',
+    @p_dni = '40444555',
+    @p_fechaNacimiento = '19750808',
+    @p_sexo = 'Femenino',
+    @p_contacto = NULL; -- Contacto opcional
+
