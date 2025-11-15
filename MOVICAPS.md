@@ -91,21 +91,6 @@ Acceso al documento [PDF](doc/diccionario_datos.pdf) del diccionario de datos.
 
 Al igual que las funciones de los lenguajes de programación, las **funciones** definidas por el usuario de SQL Server son rutinas que aceptan parámetros, realizan una acción, como un cálculo complejo, y devuelven el resultado de esa acción como un valor. El valor devuelto puede ser un valor escalar único o un conjunto de resultados.
 
-
-**Ventajas de las funciones definidas por el usuario**
-
-**Programación modular**. Puede crear la función una vez, almacenarla en la base de datos y llamarla desde el programa tantas veces como desee. Las funciones definidas por el usuario se pueden modificar, independientemente del código de origen del programa.
-
-**Ejecución más rápida.** Al igual que los procedimientos almacenados, las funciones definidas por el usuario de Transact-SQL reducen el costo de compilación del código de Transact-SQL almacenando los planes en la caché y reutilizándolos para ejecuciones repetidas. Esto significa que la función definida por el usuario no tiene que volver a analizarse y volver a personalizarse con cada uso, lo que da lugar a tiempos de ejecución más rápidos.
-
-Las funciones de idioma común en tiempo de ejecución (CLR) ofrecen una ventaja de rendimiento importante sobre las funciones de Transact-SQL para tareas de cálculo, manipulación de cadenas y lógica de negocios. Las funciones de Transact-SQL se adecuan mejor a la lógica intensiva del acceso a datos.
-
-**Reducción del tráfico de red**. Una operación que filtra datos basándose en restricciones complejas que no se puede expresar en una sola expresión escalar se puede expresar como una función. La función se puede invocar luego en la cláusula WHERE para reducir el número de filas que se envían al cliente.
-
-**Importante**
-
-Las funciones definidas por el usuario de Transact-SQL en consultas solo se pueden ejecutar en un único subproceso (plan de ejecución en serie). Por tanto, el uso de UDF impide el procesamiento de consultas en paralelo.
-
 **Tipos de funciones**
 
 **Funciones escalares**
@@ -136,28 +121,6 @@ Contener instrucciones de programación que realicen operaciones en la base de d
 
 Devolver un valor de estado a un programa que realiza una llamada para indicar si la operación se ha realizado correctamente o se han producido errores, y el motivo de estos.
 
-
-**Ventajas de usar procedimientos almacenados**
-
-**Tráfico de red reducido entre el cliente y el servidor**
-
-Los comandos de un procedimiento se ejecutan en un único lote de código. Esto puede reducir significativamente el tráfico de red entre el servidor y el cliente porque únicamente se envía a través de la red la llamada que va a ejecutar el procedimiento. Sin la encapsulación de código que proporciona un procedimiento, cada una de las líneas de código tendría que enviarse a través de la red.
-
-**Mayor seguridad**
-
-El uso de procedimientos almacenados refuerza la seguridad de la base de datos al permitir que usuarios y programas realicen operaciones en objetos subyacentes sin necesidad de contar con permisos directos, lo que simplifica la gestión de seguridad. La cláusula EXECUTE AS permite la suplantación de otro usuario para ejecutar actividades que, de otro modo, requerirían permisos excesivos (como TRUNCATE TABLE). Además, los procedimientos protegen contra ataques por inyección de código SQL al tratar los parámetros como valores literales en lugar de código ejecutable, y garantizan que solo la llamada sea visible en la red, ocultando así los nombres reales de las tablas y objetos a usuarios malintencionados. Finalmente, los procedimientos ofrecen la opción de ser cifrados para ofuscar su código fuente.
-
-**Reutilización del código**
-
-El código de cualquier operación de base de datos redundante resulta un candidato perfecto para la encapsulación de procedimientos. De este modo, se elimina la necesidad de escribir de nuevo el mismo código, se reducen las inconsistencias de código y se permite que cualquier usuario o aplicación que cuente con los permisos necesarios pueda acceder al código y ejecutarlo.
-
-**Mantenimiento más fácil**
-
-Cuando las aplicaciones cliente llaman a procedimientos y mantienen las operaciones de base de datos en la capa de datos, solo deben actualizarse los cambios de los procesos en la base de datos subyacente. El nivel de aplicación permanece independiente y no tiene que tener conocimiento sobre los cambios realizados en los diseños, las relaciones o los procesos de la base de datos.
-
-**Rendimiento mejorado**
-
-De forma predeterminada, los procedimientos almacenados mejoran el rendimiento porque el motor de base de datos compila la consulta y almacena un plan de ejecución la primera vez que se ejecutan, el cual se reutiliza en llamadas posteriores para ahorrar tiempo de procesamiento. Sin embargo, si existen cambios importantes en las tablas o datos subyacentes, este plan precompilado puede volverse ineficiente, haciendo que el procedimiento se ejecute con lentitud. En tales casos, es necesario volver a crear el procedimiento para forzar la generación de un nuevo plan optimizado y restaurar el rendimiento.
 
 **Tipos de procedimientos almacenados**
 
