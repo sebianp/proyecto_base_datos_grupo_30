@@ -95,3 +95,37 @@ Asumiendo que el paciente con dni = '20222333' tiene idPaciente = 12.*/
 -- Eliminar el registro del Paciente ID 12 (Pereyra, Daniela)
 EXEC SP_EliminarPaciente 
     @p_idPaciente = 12;
+
+/* Desarrollo de Funciones Almacenadas
+Las funciones almacenadas deben devolver un valor único (escalar) o una tabla (TVF) y no deben modificar datos.
+Para Calcular la Edad (FN_CalcularEdadPaciente)
+Tipo: Función Escalar. Recibe la fecha de nacimiento del paciente (fechaNacimiento) y calcula su edad actual en años.*/
+
+
+CREATE FUNCTION FN_CalcularEdadPaciente (
+    @p_fechaNacimiento DATE
+)
+RETURNS INT
+AS
+BEGIN
+    DECLARE @Edad INT;
+    
+    
+    SET @Edad = DATEDIFF(year, @p_fechaNacimiento, GETDATE());
+    
+    -- Lógica de ajuste si el cumpleaños no ha ocurrido
+    IF (MONTH(@p_fechaNacimiento) > MONTH(GETDATE()) OR 
+        (MONTH(@p_fechaNacimiento) = MONTH(GETDATE()) AND DAY(@p_fechaNacimiento) > DAY(GETDATE())))
+    BEGIN
+        SET @Edad = @Edad - 1;
+    END;
+    
+    RETURN @Edad;
+END;
+
+--uso paraa mostrar la edad 
+SELECT
+    P.nombreCompleto,
+    dbo.FN_CalcularEdadPaciente(P.fechaNacimiento) AS Edad_Calculada
+FROM
+    Paciente p ;
