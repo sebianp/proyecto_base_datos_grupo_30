@@ -96,6 +96,7 @@ Asumiendo que el paciente con dni = '20222333' tiene idPaciente = 12.*/
 EXEC SP_EliminarPaciente 
     @p_idPaciente = 12;
 
+
 /* Desarrollo de Funciones Almacenadas
 Las funciones almacenadas deben devolver un valor único (escalar) o una tabla (TVF) y no deben modificar datos.
 Para Calcular la Edad (FN_CalcularEdadPaciente)
@@ -129,3 +130,69 @@ SELECT
     dbo.FN_CalcularEdadPaciente(P.fechaNacimiento) AS Edad_Calculada
 FROM
     Paciente p ;
+
+
+/*Obtener el Nombre de la Especialidad por ID (FN_GetEspecialidadNombre)
+Tipo: Función Escalar. Dada una idEspecialidad de la tabla Especialidad, devolver el nombre (nombre) asociado.*/
+
+CREATE FUNCTION FN_GetEspecialidadNombre (
+    @p_idEspecialidad INT
+)
+RETURNS VARCHAR(100)
+AS
+BEGIN
+    DECLARE @NombreEspecialidad VARCHAR(100);
+
+    SELECT @NombreEspecialidad = nombre
+    FROM Especialidad
+    WHERE idEspecialidad = @p_idEspecialidad;
+
+    -- Si no se encuentra, devuelve NULL (o una cadena vacía, dependiendo del diseño)
+    RETURN @NombreEspecialidad;
+END; 
+
+--uso de funcion GetEspecialidadNombre
+SELECT
+    PR.idProfesional,
+    PR.nombreCompleto AS Nombre_del_Profesional,
+    PR.matricula,
+    -- Invocación de la función escalar:
+    dbo.FN_GetEspecialidadNombre(PR.idEspecialidad) AS Nombre_Especialidad
+FROM
+    Profesional PR
+WHERE
+    PR.idProfesional = 5; --asegurarse que sea id valido
+
+/* Funcion para listar Atenciones en una Ubicación en un Día Específico (FN_ListarAtencionesUbicacionDia)
+Tipo: Función con Valores de Tabla (TVF). Devuelve una tabla con todas las atenciones registradas en una ubicación móvil específica en una fecha dada, filtrando la tabla Atencion.*/
+
+
+CREATE FUNCTION FN_ListarAtencionesUbicacionDia (
+    @p_idUbicacionMovil INT,
+    @p_fecha DATE
+)
+RETURNS TABLE
+AS
+RETURN
+(
+    -- Consulta SELECT que se utiliza como el conjunto de resultados de la tabla
+    SELECT
+        A.idAtencion,
+        A.fechaHora,
+        P.nombreCompleto AS Paciente,
+        PR.nombreCompleto AS Profesional
+    FROM
+        Atencion A
+    JOIN 
+        Paciente P ON A.idPaciente = P.idPaciente
+    JOIN 
+        Profesional PR ON A.idProfesional = PR.idProfesional
+    WHERE
+        A.idUbicacionMovil = @p_idUbicacionMovil
+        AND CAST(A.fechaHora AS DATE) = @p_fecha -- Convertir DATETIME a DATE para la comparación diaria
+);
+
+-- Uso de la Función ListarAtencionesUbicacionDia:
+select * from Atencion;--ver datos antes de consultar
+
+SELECT * FROM dbo.FN_ListarAtencionesUbicacionDia(1, '20250110');
