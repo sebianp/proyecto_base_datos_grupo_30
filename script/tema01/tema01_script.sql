@@ -1,7 +1,7 @@
 /*Utilizaremos la tabla Paciente para las operaciones CRUD, ya que incluye campos esenciales como nombreCompleto, dni, fechaNacimiento y contacto.
 
  Procedimiento para Insertar Registros (INSERT)
-Paso: Definir el procedimiento SP_InsertarPaciente que acepta los parámetros necesarios para crear un nuevo registro en la tabla Paciente.
+ Procedimiento SP_InsertarPaciente que acepta los parámetros necesarios para crear un nuevo registro en la tabla Paciente.
 */
  
 CREATE PROCEDURE SP_InsertarPaciente (
@@ -18,3 +18,20 @@ BEGIN
     VALUES (@p_nombreCompleto, @p_dni, @p_fechaNacimiento, @p_sexo, @p_contacto);
  END;   
    
+/*Procedimiento para Modificar Registros (UPDATE)
+Procedimiento SP_ModificarContactoPaciente para actualizar el campo contacto de un paciente, 
+utilizando la clave primaria idPaciente para el filtro WHERE.*/
+
+
+CREATE PROCEDURE SP_ModificarContactoPaciente (
+    @p_idPaciente INT,
+    @p_nuevoContacto VARCHAR(100)
+)
+AS
+BEGIN
+    -- Ejecutar UPDATE
+    UPDATE Paciente
+    SET contacto = @p_nuevoContacto
+    WHERE idPaciente = @p_idPaciente;
+END;
+
