@@ -87,3 +87,11 @@ where dni = 10111222;
 EXEC SP_ModificarContactoPaciente 
     @p_idPaciente = 11, 
     @p_nuevoContacto = '3624123456_NUEVO';
+
+
+/* Realizar DELETE invocando el procedimiento
+Asumiendo que el paciente con dni = '20222333' tiene idPaciente = 12.*/
+
+-- Eliminar el registro del Paciente ID 12 (Pereyra, Daniela)
+EXEC SP_EliminarPaciente 
+    @p_idPaciente = 12;
