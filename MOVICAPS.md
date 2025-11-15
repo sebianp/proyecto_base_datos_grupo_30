@@ -149,7 +149,8 @@ En cuanto al retorno de valores, la diferencia también es significativa. Una Fu
 
 Finalmente, la manera de invocación en el código es la característica más visible. Las Funciones Almacenadas son altamente integrables, pudiendo ser utilizadas directamente dentro de sentencias SELECT, WHERE o HAVING como cualquier función de sistema nativa, o como fuente de datos en la cláusula FROM. Por el contrario, los Procedimientos Almacenados no son aptos para la composición de consultas y deben ser invocados de manera independiente mediante el comando EXECUTE o EXEC.
 
-> Acceder a la siguiente carpeta para la descripción completa del tema [scripts-> tema_1](script/tema01_nombre_tema)
+**SCRIPT con ejemplos aplicados al proyecto**
+> Acceder a la siguiente carpeta  [scripts-> tema_01](script/tema01/tema01_script.sql)
 
 ### Desarrollo TEMA 2 "----"
 
