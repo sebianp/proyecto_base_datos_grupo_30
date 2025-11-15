@@ -76,3 +76,14 @@ EXEC SP_InsertarPaciente
     @p_sexo = 'Femenino',
     @p_contacto = NULL; -- Contacto opcional
 
+
+/* Modificación y Eliminación con Procedimientos. Realizar UPDATE invocando el procedimiento
+Asumiendo que el paciente con dni = '10111222' tiene idPaciente = 11.
+Actualizar el contacto del Paciente ID 1 (Ramirez, Elias)*/
+--consulta para verificar el id de paciente 10111222
+select* from Paciente
+where dni = 10111222;
+--
+EXEC SP_ModificarContactoPaciente 
+    @p_idPaciente = 11, 
+    @p_nuevoContacto = '3624123456_NUEVO';
