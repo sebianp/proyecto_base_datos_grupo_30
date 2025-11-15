@@ -1,62 +1,20 @@
- --Procedimiento para obtener unidades móviles por barrio (actuales)
+/*Utilizaremos la tabla Paciente para las operaciones CRUD, ya que incluye campos esenciales como nombreCompleto, dni, fechaNacimiento y contacto.
+
+ Procedimiento para Insertar Registros (INSERT)
+Paso: Definir el procedimiento SP_InsertarPaciente que acepta los parámetros necesarios para crear un nuevo registro en la tabla Paciente.
+*/
  
-CREATE PROCEDURE SP_ObtenerUnidadesPorBarrioActual
-    @p_idBarrio INT
+CREATE PROCEDURE SP_InsertarPaciente (
+    @p_nombreCompleto VARCHAR(150),
+    @p_dni VARCHAR(15),
+    @p_fechaNacimiento DATE,
+    @p_sexo VARCHAR(10), -- Restricción CHECK en la tabla Paciente: ('Masculino','Femenino','Otro') [2]
+    @p_contacto VARCHAR(100) = NULL 
+)
 AS
 BEGIN
-    SELECT
-        um.patente,
-        tum.descripcion AS TipoUnidad,
-        um.capacidadDiaria,
-        b.nombre_barrio,
-        uc.direccion,
-        uc.fecha_ingreso
-    FROM
-        UnidadMovil um
-    JOIN
-        TipoUnidadMovil tum ON um.idTipo = tum.idTipo
-    JOIN
-        UbicacionMovil uc ON um.idUnidad = uc.idUnidad
-    JOIN
-        Barrio b ON uc.idBarrio = b.idBarrio
-    WHERE
-        uc.idBarrio = @p_idBarrio
-        AND uc.fecha_egreso IS NULL; -- Solo ubicaciones actuales 
-END;
-
---uso
- EXEC SP_ObtenerUnidadesPorBarrioActual 10;
-
-
-
- -- Función para obtener el historial de atenciones de un paciente
-CREATE FUNCTION FN_HistorialAtencionesPaciente (@p_idPaciente INT)
-RETURNS TABLE
-AS
-RETURN
-(
-    SELECT
-        a.fechaHora,
-        p.nombreCompleto AS Profesional,
-        e.nombre AS Especialidad,
-        d.descripcion AS Diagnostico
-    FROM
-        Atencion a
-    JOIN
-        Profesional p ON a.idProfesional = p.idProfesional
-    JOIN
-        Especialidad e ON p.idEspecialidad = e.idEspecialidad [cite: 6]
-    JOIN
-        Diagnostico d ON a.idDiagnostico = d.idDiagnostico
-    WHERE
-        a.idPaciente = @p_idPaciente
-);
-GO*/
-
---uso consulta historial de atencion de un paciente
-SELECT
-    *
-FROM
-    dbo.FN_HistorialAtencionesPaciente(5) -- Muestra el historial del paciente con idPaciente = 5
-ORDER BY
-    fechaHora DESC;
+    -- Ejecutar INSERT INTO
+    INSERT INTO Paciente (nombreCompleto, dni, fechaNacimiento, sexo, contacto)
+    VALUES (@p_nombreCompleto, @p_dni, @p_fechaNacimiento, @p_sexo, @p_contacto);
+ END;   
+   
