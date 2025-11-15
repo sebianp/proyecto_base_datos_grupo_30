@@ -35,3 +35,16 @@ BEGIN
     WHERE idPaciente = @p_idPaciente;
 END;
 
+/* Procedimiento para Eliminar Registros (DELETE)
+ Procedimiento SP_EliminarPaciente para eliminar un paciente, usando idPaciente.*/
+
+CREATE PROCEDURE SP_EliminarPaciente (
+    @p_idPaciente INT
+)
+AS
+BEGIN
+    -- Ejecutar DELETE
+    DELETE FROM Paciente
+    WHERE idPaciente = @p_idPaciente;
+END;
+
