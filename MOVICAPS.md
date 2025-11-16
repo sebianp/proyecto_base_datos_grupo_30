@@ -118,11 +118,11 @@ En la segunda parte del proyecto, distribuimos los temas de investigación entre
 ## CAPÍTULO IV: DESARROLLO DEL TEMA / PRESENTACIÓN DE RESULTADOS 
 
 ### Diagrama relacional
-![diagrama_relacional](https://github.com/sebianp/proyecto_base_datos_grupo_30/blob/main/doc/erd_grupo30_2025.png)
+![diagrama_relacional](./doc/erd_grupo30_2025.png)
 
 ### Diccionario de datos
 
-Acceso al documento [PDF](doc/diccionario_datos.pdf) del diccionario de datos.
+Acceso al documento [PDF](./doc/diccionario_de_datos.pdf) del diccionario de datos.
 
 
 ### Desarrollo TEMA 1 "PROCEDIMIENTOS Y FUNCIONES ALMACENADAS"
@@ -193,7 +193,7 @@ En cuanto al retorno de valores, la diferencia también es significativa. Una Fu
 Finalmente, la manera de invocación en el código es la característica más visible. Las Funciones Almacenadas son altamente integrables, pudiendo ser utilizadas directamente dentro de sentencias SELECT, WHERE o HAVING como cualquier función de sistema nativa, o como fuente de datos en la cláusula FROM. Por el contrario, los Procedimientos Almacenados no son aptos para la composición de consultas y deben ser invocados de manera independiente mediante el comando EXECUTE o EXEC.
 
 **SCRIPT con ejemplos aplicados al proyecto**
-> Acceder a la siguiente carpeta  [scripts-> tema_01](script/tema01/tema01_script.sql)
+> Acceder a la siguiente carpeta  [scripts-> tema_01](./script/tema01/tema01_script.sql)
 
 ### Desarrollo TEMA 2 "Optimización de consultas a través de índices"
 
@@ -205,7 +205,7 @@ En el siguiente diagrama tenemos un índice basado en los números de empleados 
 
 Esto permite un acceso más eficiente a los datos creando una “vía rápida” hacia ellos y evitando que el motor recorra fila por fila la tabla.
 
-![diagrama\_relacional](https://github.com/sebianp/proyecto_base_datos_grupo_30/blob/main/doc/tema_02/representacion_indices.png)
+![diagrama\_relacional](./doc/tema_02/representacion_indices.png)
 
 ---
 
@@ -359,7 +359,7 @@ ON Atencion (Fecha, IdPaciente);
 
 ---
  ### SCRIPT con ejemplos aplicados al proyecto
-> Acceder a la siguiente carpeta [scripts-> tema_2](script/tema02)
+> Acceder a la siguiente carpeta [scripts-> tema_2](./script/tema02/optimizacion_de_consultas_a_travez_de_indices.sql)
 
 ### Desarrollo TEMA 3 "Manejo de transacciones y transacciones anidadas"
 
@@ -519,7 +519,7 @@ Cualquier `ROLLBACK`, sin savepoint, revierte toda la cadena de transacciones an
 - Limita el acceso a los datos solo a las operaciones que se confirman (`commit`), añadiendo una capa de seguridad crucial en sistemas con datos sensibles.
 
  #### SCRIPT con ejemplos aplicados al proyecto
-> Acceder a la siguiente carpeta [scripts-> tema_3](script/tema3_Manejo_de_transacciones)
+> Acceder a la siguiente carpeta [scripts-> tema_3](./script/tema3_Manejo_de_transacciones)
 
 ### Desarrollo TEMA 4 Manejo de permisos a nivel de usuario de base de datos
 La asignación de permisos a nivel de usuario en una base de datos es fundamental para garantizar la seguridad y la integridad de la información. Al restringir el acceso únicamente a los usuarios autorizados, se minimiza el riesgo de modificaciones indebidas o errores operativos.
@@ -669,7 +669,7 @@ Se puede concluir que el usuario mantenimiento no pudo acceder a la tabla Pacien
 
 El usuario auditor, al ser miembro del rol lectorAuditor, sí pudo consultar la información.
 
-> Acceder a la siguiente carpeta para la descripción completa del tema [scripts-> tema_4](script/tema04/manejo_de_permisos_a_nivel_de_usuario_de_base_de_datos.sql)
+> Acceder a la siguiente carpeta para la descripción completa del tema [scripts-> tema_4](./script/tema04/manejo_de_permisos_a_nivel_de_usuario_de_base_de_datos.sql)
 
 
 ## CAPÍTULO V: CONCLUSIONES
