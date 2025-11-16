@@ -181,6 +181,23 @@ En SQL Server existen dos tipos de roles de base de datos:
 
 Los permisos se conceden o deniegan a las entidades de seguridad (inicios de sesión, usuarios y roles) mediante la instrucción GRANT, y se pueden administrar con DENY y REVOKE. Para agregar miembros a un rol de base de datos se utiliza ALTER ROLE ... ADD MEMBER
 
+En el proyecto MOVICAPS se definieron dos usuarios más:
+
+**Auditor:** enfocado en la revisión y control de la información.
+
+**Mantenimiento:** encargado de la operación y mantenimiento del sistema
+```
+USE PROYECTO_MOVICAPS; 
+
+-- Crear inicios de sesión
+CREATE LOGIN auditor WITH PASSWORD = '**=aud1t0rr';
+CREATE LOGIN mantenimiento WITH PASSWORD = '..*12m4nt3nim';
+
+-- Crear usuarios asociados a los inicios de sesión
+CREATE USER auditor FOR LOGIN auditor;
+CREATE USER mantenimiento FOR LOGIN mantenimiento;
+```
+
 
 
 
