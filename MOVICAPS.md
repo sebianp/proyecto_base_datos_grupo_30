@@ -197,6 +197,19 @@ CREATE LOGIN mantenimiento WITH PASSWORD = '..*12m4nt3nim';
 CREATE USER auditor FOR LOGIN auditor;
 CREATE USER mantenimiento FOR LOGIN mantenimiento;
 ```
+El usuario auditor requiere acceso de lectura a las tablas Paciente, UnidadMovil y Atencion. Para ello se creó un rol de solo lectura:
+```
+-- Crear el rol de solo lectura
+CREATE ROLE lectorAuditor;
+
+-- Conceder permisos de lectura sobre las tablas específicas
+GRANT SELECT ON OBJECT::dbo.Paciente TO lectorAuditor;
+GRANT SELECT ON OBJECT::dbo.UnidadMovil TO lectorAuditor;
+GRANT SELECT ON OBJECT::dbo.Atencion TO lectorAuditor;
+
+-- Agregar el usuario auditor al rol
+ALTER ROLE lectorAuditor ADD MEMBER auditor;
+```
 
 
 
