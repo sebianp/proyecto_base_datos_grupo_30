@@ -241,7 +241,7 @@ El usuario auditor, al ser miembro del rol lectorAuditor, sí pudo consultar la 
 
 
 
-> Acceder a la siguiente carpeta para la descripción completa del tema [scripts-> tema_4](script/manejo_de_permisos_a_nivel_de_usuario_de_base_de_datos)
+> Acceder a la siguiente carpeta para la descripción completa del tema [scripts-> tema_4](script/tema04/manejo_de_permisos_a_nivel_de_usuario_de_base_de_datos.sql)
 
 ## CAPÍTULO V: CONCLUSIONES
 
