@@ -117,6 +117,7 @@ CREATE USER analista FOR LOGIN analista;
 ```
 **Asignación de permisos**
 Una vez creados los usuarios, se les concede acceso a la base de datos. Sin embargo, no reciben automáticamente permisos sobre los objetos (tablas, vistas, procedimientos, etc.). Por lo tanto, se deben asignar explícitamente los permisos necesarios según el rol funcional de cada usuario con las instrucciones GRANT, REVOKE y DENY.
+
 Tipos de permisos que se pueden manejar.
 Tipo de permiso	| Aplicación común
 ---|---
@@ -128,6 +129,16 @@ EXECUTE |	Ejecutar procedimientos
 ALTER, CREATE, DROP |	Modificaciones estructurales
 CONTROL |	Control total sobre un objeto
 
+Para el usuario administrador se requiere el permiso CONTROL, que según la jerarquía de permisos de SQL Server incluye todos los demás permisos de la base de datos, tales como ALTER, SELECT, INSERT, UPDATE, DELETE, entre otros. Este permiso otorga control total sobre la base de datos.
+
+En cambio, para el usuario analista se otorga únicamente el permiso SELECT, que representa el nivel más básico de acceso posible, limitado a la lectura de datos.
+```
+-- Permisos para el administrador (control total)
+GRANT CONTROL ON DATABASE::PROYECTO_MOVICAPS TO administrador;
+
+-- Permisos para el analista (sólo lectura)
+GRANT SELECT ON DATABASE::PROYECTO_MOVICAPS TO analista;
+```
 
 > Acceder a la siguiente carpeta para la descripción completa del tema [scripts-> tema_4](script/tema04_nombre_tema)
 
