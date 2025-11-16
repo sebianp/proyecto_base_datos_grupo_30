@@ -156,6 +156,7 @@ INSERT INTO Paciente (nombreCompleto, dni, fechaNacimiento, sexo, contacto)
  Al intentar ejecutar insert sobre la tabla Paciente, se obtuvo el siguiente error:
 ```The INSERT permission was denied on the object 'Paciente', database 'PROYECTO_MOVICAPS', schema 'dbo'.```
 Esto confirma que el usuario analista no posee permisos de escritura sobre la tabla.
+
 **Usuario administrador (control total):** El mismo insert ejecutado con el usuario administrador se realizó correctamente, ya que este cuenta con el permiso control sobre la base de datos, lo que incluye todos los permisos de modificación.
 ```EXECUTE AS USER = 'administrador';
 INSERT INTO Paciente (nombreCompleto, dni, fechaNacimiento, sexo, contacto)
@@ -173,6 +174,7 @@ EXEC SP_InsertarPaciente
 Se pudo concluir que, el usuario administrador pudo realizar inserciones directas en la tabla gracias al permiso control. El usuario analista no pudo insertar directamente, ya que solo tiene permiso de lectura (select). Sin embargo, el analista sí pudo insertar registros a través del procedimiento almacenado, debido al permiso execute  concedido específicamente sobre dicho objeto
 
 **Permisos a nivel de rol de usuarios de base de datos**
+
 En SQL Server existen dos tipos de roles de base de datos:
 
 **Roles fijos de base de datos:** son un conjunto de roles preconfigurados que proporcionan grupos prácticos de permisos a nivel de base de datos.
@@ -217,8 +219,9 @@ Se verificó el comportamiento de ambos usuarios al intentar leer el contenido d
 ```
 EXECUTE AS USER = 'mantenimiento';
 SELECT p.nombreCompleto, p.dni, p.fechaNacimiento, p.sexo, p.contacto
-FROM dbo.Paciente p;
+FROM dbo.Paciente p;```
 Siendo el resultado el siguiente error:
+```
 The SELECT permission was denied on the object 'Paciente', database 'PROYECTO_MOVICAPS', schema 'dbo'.
 ```
 **Usuario auditor (miembro del rol lectorAuditor):**
