@@ -210,6 +210,24 @@ GRANT SELECT ON OBJECT::dbo.Atencion TO lectorAuditor;
 -- Agregar el usuario auditor al rol
 ALTER ROLE lectorAuditor ADD MEMBER auditor;
 ```
+**Prueba de acceso**
+Se verificó el comportamiento de ambos usuarios al intentar leer el contenido de la tabla Paciente:
+
+**Usuario mantenimiento (sin permisos de lectura):**
+```
+EXECUTE AS USER = 'mantenimiento';
+SELECT p.nombreCompleto, p.dni, p.fechaNacimiento, p.sexo, p.contacto
+FROM dbo.Paciente p;
+Siendo el resultado el siguiente error:
+The SELECT permission was denied on the object 'Paciente', database 'PROYECTO_MOVICAPS', schema 'dbo'.
+```
+**Usuario auditor (miembro del rol lectorAuditor):**
+```
+EXECUTE AS USER = 'auditor';
+SELECT p.nombreCompleto, p.dni, p.fechaNacimiento, p.sexo, p.contacto
+FROM dbo.Paciente p;
+```
+La consulta se ejecutó correctamente, mostrando los datos de la tabla.
 
 
 
