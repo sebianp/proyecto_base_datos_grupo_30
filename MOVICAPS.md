@@ -260,9 +260,9 @@ Nunc sollicitudin purus quis ante sodales luctus. Proin a scelerisque libero, vi
 
 ## BIBLIOGRAFÍA DE CONSULTA
 
- 1. List item
- 2. List item
- 3. List item
- 4. List item
- 5. List item
+* IBM Corporation. (s. f.). *Índices – Documentación de IBM DB2 11.5*. Recuperado de [https://www.ibm.com/docs/es/db2/11.5.x?topic=objects-indexes](https://www.ibm.com/docs/es/db2/11.5.x?topic=objects-indexes) ([IBM][1])
+* Enviame IO. (s. f.). *Índices en BBDD relacionales*. Recuperado de [https://enviame.io/indices-en-bbdd-relacionales/](https://enviame.io/indices-en-bbdd-relacionales/)
+* Akansha & SQLShack Team. (2018, 28 de mayo). *¿Cuál es la diferencia entre Índices Agrupados y No Agrupados en SQL Server?* SQLShack. Recuperado de [https://www.sqlshack.com/es/cual-es-la-diferencia-entre-indices-agrupados-y-no-agrupados-en-sql-server/](https://www.sqlshack.com/es/cual-es-la-diferencia-entre-indices-agrupados-y-no-agrupados-en-sql-server/) ([sqlshack.com][2])
+* IBM Corporation. (s. f.). *Índices en clúster y no en clúster – Documentación de IBM DB2 12.1.0*. Recuperado de [https://www.ibm.com/docs/es/db2/12.1.0?topic=indexes-clustered-non-clustered](https://www.ibm.com/docs/es/db2/12.1.0?topic=indexes-clustered-non-clustered)
+* Microsoft. (s. f.). *Create unique constraints – SQL Server | Microsoft Learn*. Recuperado de [https://learn.microsoft.com/en-us/sql/relational-databases/tables/create-unique-constraints?view=sql-server-ver17](https://learn.microsoft.com/en-us/sql/relational-databases/tables/create-unique-constraints?view=sql-server-ver17) ([Microsoft Learn][3])
 
