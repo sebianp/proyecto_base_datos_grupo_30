@@ -172,6 +172,15 @@ EXEC SP_InsertarPaciente
 ```
 Se pudo concluir que, el usuario administrador pudo realizar inserciones directas en la tabla gracias al permiso control. El usuario analista no pudo insertar directamente, ya que solo tiene permiso de lectura (select). Sin embargo, el analista sí pudo insertar registros a través del procedimiento almacenado, debido al permiso execute  concedido específicamente sobre dicho objeto
 
+**Permisos a nivel de rol de usuarios de base de datos**
+En SQL Server existen dos tipos de roles de base de datos:
+
+**Roles fijos de base de datos:** son un conjunto de roles preconfigurados que proporcionan grupos prácticos de permisos a nivel de base de datos.
+
+**Roles definidos por el usuario:** se crean mediante la instrucción CREATE ROLE y permiten representar grupos de usuarios con permisos comunes, facilitando la administración y supervisión de permisos.
+
+Los permisos se conceden o deniegan a las entidades de seguridad (inicios de sesión, usuarios y roles) mediante la instrucción GRANT, y se pueden administrar con DENY y REVOKE. Para agregar miembros a un rol de base de datos se utiliza ALTER ROLE ... ADD MEMBER
+
 
 
 
