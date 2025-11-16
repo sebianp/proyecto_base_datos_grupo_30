@@ -170,7 +170,7 @@ EXEC SP_InsertarPaciente
     @p_fechaNacimiento = '20050101',
     @p_sexo = 'Masculino';
 ```
-
+Se pudo concluir que, el usuario administrador pudo realizar inserciones directas en la tabla gracias al permiso control. El usuario analista no pudo insertar directamente, ya que solo tiene permiso de lectura (select). Sin embargo, el analista sí pudo insertar registros a través del procedimiento almacenado, debido al permiso execute  concedido específicamente sobre dicho objeto
 
 
 
