@@ -139,6 +139,43 @@ GRANT CONTROL ON DATABASE::PROYECTO_MOVICAPS TO administrador;
 -- Permisos para el analista (sólo lectura)
 GRANT SELECT ON DATABASE::PROYECTO_MOVICAPS TO analista;
 ```
+Teniendo el procedimiento almacenado SP_InsertarPaciente creado para el tema 1, se otorgó al usuario analista el permiso de ejecución mediante el siguiente comando:
+```
+-- Permiso de ejecución sobre un procedimiento específico
+GRANT EXECUTE ON OBJECT::dbo.SP_InsertarPaciente TO analista;
+```
+**Prueba de acceso**
+Para validar los permisos, se realizaron pruebas de inserción en la tabla Paciente con ambos usuarios:
+
+Usuario analista (solo lectura):
+```
+EXECUTE AS USER = 'analista';
+INSERT INTO Paciente (nombreCompleto, dni, fechaNacimiento, sexo, contacto)
+    VALUES ('Ramirez, Elias', '10111222', '19900515', 'Masculino', '3624123456');
+```
+ Al intentar ejecutar insert sobre la tabla Paciente, se obtuvo el siguiente error:
+```The INSERT permission was denied on the object 'Paciente', database 'PROYECTO_MOVICAPS', schema 'dbo'.```
+Esto confirma que el usuario analista no posee permisos de escritura sobre la tabla.
+**Usuario administrador (control total):** El mismo insert ejecutado con el usuario administrador se realizó correctamente, ya que este cuenta con el permiso control sobre la base de datos, lo que incluye todos los permisos de modificación.
+```EXECUTE AS USER = 'administrador';
+INSERT INTO Paciente (nombreCompleto, dni, fechaNacimiento, sexo, contacto)
+    VALUES ('Ramirez, Elias', '45342321', '19900515', 'Masculino', '3624123456');
+```
+**Usuario analista a través del procedimiento almacenado:** Finalmente, se probó un insert mediante el procedimiento almacenado SP_InsertarPaciente. En este caso, el usuario analista pudo ejecutar la operación correctamente, ya que se le había concedido explícitamente el permiso EXECUTE sobre dicho procedimiento.
+```
+EXECUTE AS USER = 'analista';
+EXEC SP_InsertarPaciente 
+    @p_nombreCompleto = 'Castro, Hector',
+    @p_dni = '30333444',
+    @p_fechaNacimiento = '20050101',
+    @p_sexo = 'Masculino';
+```
+
+
+
+
+
+
 
 > Acceder a la siguiente carpeta para la descripción completa del tema [scripts-> tema_4](script/tema04_nombre_tema)
 
