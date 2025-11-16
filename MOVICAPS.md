@@ -163,7 +163,8 @@ Proin aliquet mauris id ex venenatis, eget fermentum lectus malesuada. Maecenas 
 
 ## CAPÍTULO V: CONCLUSIONES
 
-Nunc sollicitudin purus quis ante sodales luctus. Proin a scelerisque libero, vitae pharetra lacus. Nunc finibus, tellus et dictum semper, nisi sem accumsan ligula, et euismod quam ex a tellus. 
+**Tema 1: "Procedimientos y funciones almacenadas"**
+Los procedimientos almacenados y funciones almacenadas, tienen propósitos específicos y complementarios en la gestión de bases de datos. Aprendimos que los procedimientos almacenados son fundamentales para operaciones complejas y modificaciones de datos, permitiendo una gestión eficiente y segura de procesos de negocio gracias a su capacidad de ejecutar múltiples operaciones, controlar transacciones y reducir el tráfico de red. Por otro lado, las funciones almacenadas resultan más adecuadas para cálculos y transformaciones reutilizables dentro de consultas, ya que su diseño se centra en devolver valores o conjuntos de resultados sin modificar datos.
 
 
 

@@ -134,11 +134,6 @@ aumentan la seguridad y optimizan el rendimiento al reutilizar planes de ejecuci
 
 
 
-
-
-
-
-
 /* Modificación y Eliminación con Procedimientos. Realizar UPDATE invocando el procedimiento
 Asumiendo que el paciente con dni = '10111222' tiene idPaciente = 11.
 Actualizar el contacto del Paciente ID 1 (Ramirez, Elias)*/
