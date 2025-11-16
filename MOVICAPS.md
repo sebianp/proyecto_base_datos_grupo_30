@@ -247,6 +247,10 @@ El usuario auditor, al ser miembro del rol lectorAuditor, sí pudo consultar la 
 
 Nunc sollicitudin purus quis ante sodales luctus. Proin a scelerisque libero, vitae pharetra lacus. Nunc finibus, tellus et dictum semper, nisi sem accumsan ligula, et euismod quam ex a tellus. 
 
+**Manejo de permisos a nivel de usuario de base de datos** Integrar un esquema adecuado de manejo de permisos en la base de datos es fundamental para garantizar la integridad y seguridad de la información. Los permisos deben asignarse de acuerdo con las necesidades específicas de cada usuario o grupo de usuarios. A nivel de usuario, los permisos ofrecen un control detallado, ya que se otorgan de manera específica a cada persona. Sin embargo, este enfoque puede volverse complejo y difícil de mantener en sistemas grandes, dado que administrar permisos usuario por usuario requiere un esfuerzo considerable. En cambio, el manejo de permisos a nivel de rol simplifica la administración, porque agrupa permisos comunes y permite asignarlos a múltiples usuarios de forma centralizada y más sencilla. Es más fácil agregar o quitar usuarios de un rol que modificar permisos uno por uno, lo asegura un esquema de seguridad más ordenado.
+
+En conclusión, lo más recomendable es combinar ambos enfoques: utilizar roles para la gestión general y la asignación de permisos comunes, mientras que los permisos directos a usuarios deben reservarse únicamente para necesidades puntuales que requieran un control más específico.
+
 
 
 ## BIBLIOGRAFÍA DE CONSULTA
