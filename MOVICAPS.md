@@ -96,7 +96,7 @@ Los analistas de datos pueden ser asignados a un rol con permisos de solo lectur
 El administrador de la base de datos, en cambio, requiere permisos completos para gestionar estructuras, usuarios y operaciones críticas.
 
 #### Aplicación en nuestro proyecto 
-Nos enfocamos en implementar una estrategia de permisos basada en el motor de base de datos, utilizando usuarios y roles definidos a nivel de base de datos. Para ello configuró la base de datos en modo mixto (autenticación integrada con windows y por usuario de base de datos).
+Nos enfocamos en implementar una estrategia de permisos basada en el motor de base de datos, utilizando usuarios y roles definidos a nivel de base de datos. Para ello se configuró la base de datos en modo mixto (autenticación integrada con windows y por usuario de base de datos).
 
 **Permisos a nivel de Usuarios de base de datos**
 El manejo de permisos a nivel de usuario es el conjunto de acciones destinadas a controlar qué operaciones puede realizar cada usuario dentro de una base de datos. Esto incluye la capacidad de leer información, modificar registros, ejecutar procedimientos almacenados, crear o alterar objetos, entre otras tareas. La asignación de estos permisos se realiza de forma explícita, ya sea directamente al usuario o, preferentemente, a través de roles que agrupan funciones similares.
@@ -116,7 +116,18 @@ CREATE USER administrador FOR LOGIN administrador;
 CREATE USER analista FOR LOGIN analista;
 ```
 **Asignación de permisos**
-Una vez creados los usuarios, se les concede acceso a la base de datos. Sin embargo, no reciben automáticamente permisos sobre los objetos (tablas, vistas, procedimientos, etc.). Por lo tanto, se deben asignar explícitamente los permisos necesarios según el rol funcional de cada usuario.
+Una vez creados los usuarios, se les concede acceso a la base de datos. Sin embargo, no reciben automáticamente permisos sobre los objetos (tablas, vistas, procedimientos, etc.). Por lo tanto, se deben asignar explícitamente los permisos necesarios según el rol funcional de cada usuario con las instrucciones GRANT, REVOKE y DENY.
+Tipos de permisos que se pueden manejar.
+Tipo de permiso	| Aplicación común
+---|---
+SELECT |	Lectura de datos
+INSERT |	Agregar registros
+UPDATE |	Modificar datos
+DELETE |	Eliminar registros
+EXECUTE |	Ejecutar procedimientos
+ALTER, CREATE, DROP |	Modificaciones estructurales
+CONTROL |	Control total sobre un objeto
+
 
 > Acceder a la siguiente carpeta para la descripción completa del tema [scripts-> tema_4](script/tema04_nombre_tema)
 
