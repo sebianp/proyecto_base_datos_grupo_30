@@ -18,6 +18,38 @@
 
 **Año**: 2025
 
+## Índice
+
+1. [CAPÍTULO I: INTRODUCCIÓN](#capítulo-i-introducción)</br>
+   1.1. [Introducción](#introducción)</br>
+   1.2. [Problema de Investigación](#problema-de-investigación)</br>
+   1.3. [Alcance del Proyecto](#alcance-del-proyecto)</br>
+   1.4. [Objetivo General](#objetivo-general)
+
+2. [CAPITULO II: MARCO CONCEPTUAL O REFERENCIAL](#capitulo-ii-marco-conceptual-o-referencial)</br>
+   2.1. [TEMA 1: Procedimientos y funciones almacenadas](#tema-1-procedimientos-y-funciones-almacenadas)</br>
+   2.2. [TEMA 2: Optimización de consultas a través de índices](#tema-2-optimizacion-de-consultas-a-traves-de-indices)</br>
+   2.3. [TEMA 3: Manejo de transacciones y transacciones anidadas](#tema-3-manejo-de-transacciones-y-transacciones-anidadas)</br>
+   2.4. [TEMA 4: Manejo de permisos a nivel de usuarios de base de datos](#tema-4-manejo-de-permisos-a-nivel-de-usuarios-de-base-de-datos)
+
+3. [CAPÍTULO III: METODOLOGÍA SEGUIDA](#capítulo-iii-metodología-seguida)</br>
+   3.1. [a) Cómo se realizó el Trabajo Práctico](#a-cómo-se-realizó-el-trabajo-práctico)</br>
+   3.2. [b) Herramientas (Instrumentos y procedimientos)](#b-herramientas-instrumentos-y-procedimientos)
+
+4. [CAPÍTULO IV: DESARROLLO DEL TEMA / PRESENTACIÓN DE RESULTADOS](#capítulo-iv-desarrollo-del-tema--presentación-de-resultados)</br>
+   4.1. [Diagrama relacional](#diagrama-relacional)</br>
+   4.2. [Diccionario de datos](#diccionario-de-datos)</br>
+   4.3. [Desarrollo TEMA 1 "PROCEDIMIENTOS Y FUNCIONES ALMACENADAS"](#desarrollo-tema-1-procedimientos-y-funciones-almacenadas)</br>
+   4.4. [Desarrollo TEMA 2 "Optimización de consultas a través de índices"](#desarrollo-tema-2-optimización-de-consultas-a-través-de-índices)</br>
+   4.5. [Desarrollo TEMA 3 "Manejo de transacciones y transacciones anidadas"](#desarrollo-tema-3-manejo-de-transacciones-y-transacciones-anidadas)</br>
+   4.6. [Desarrollo TEMA 4 Manejo de permisos a nivel de usuario de base de datos](#desarrollo-tema-4-manejo-de-permisos-a-nivel-de-usuario-de-base-de-datos)
+
+5. [CAPÍTULO V: CONCLUSIONES](#capítulo-v-conclusiones)
+
+6. [BIBLIOGRAFÍA DE CONSULTA](#bibliografía-de-consulta)
+
+---
+
 ## CAPÍTULO I: INTRODUCCIÓN
 
 ### Introducción 
@@ -46,7 +78,7 @@ Desarrollar una Base de Datos Relacional para la gestión dinámica de Unidades 
 
 ## CAPITULO II: MARCO CONCEPTUAL O REFERENCIAL
 
-**TEMA 1 " PROCEDIMIENTOS Y FUNCIONES ALMACENADAS "** 
+### TEMA 1: Procedimientos y funciones almacenadas
 
 Un **procedimiento almacenado** de SQL Server es un grupo de una o varias instrucciones. Los procedimientos pueden:
 Aceptar parámetros de entrada y devolver varios valores en forma de parámetros de salida al programa que realiza la llamada.
@@ -56,27 +88,27 @@ Devolver un valor de estado a un programa que realiza una llamada para indicar s
 **Funciones definidas por el usuario**
 Las funciones definidas por el usuario de SQL Server son rutinas que aceptan parámetros, realizan una acción, como un cálculo complejo, y devuelven el resultado de esa acción como un valor. El valor devuelto puede ser un valor escalar único o un conjunto de resultados.
 
-**TEMA 2 " OPTIMIZACION DE CONSULTAS A TRAVES DE INDICES. "** 
+### TEMA 2: Optimización de consultas a través de índices 
 
 El uso de índices representa una de las técnicas esenciales para optimizar el rendimiento en sistemas de gestión de bases de datos relacionales. A medida que la cantidad de registros crece, la necesidad de acceder a los datos de manera eficiente se vuelve fundamental para garantizar tiempos de respuesta adecuados y una correcta experiencia de uso en aplicaciones de software.
 
 En el presente informe se estudian los tipos principales de índices soportados por SQL Server, su utilidad, criterios para su creación y las consideraciones prácticas respecto al impacto que generan en operaciones de lectura y escritura. Asimismo, se demuestra la mejora en el rendimiento mediante pruebas controladas, comparando tiempos y planes de ejecución antes y después de la aplicación de índices adecuados. El objetivo es comprender cuándo y por qué utilizar índices.
 
-**TEMA 3 " MANEJO DE TRANSACCIONES Y TRANSACCIONES ANIDADAS. "**
+### TEMA 3: Manejo de transacciones y transacciones anidadas
 
 El manejo adecuado de transacciones es un pilar clave en los sistemas de gestión de bases de datos relacionales, especialmente en contextos empresariales críticos donde la integridad y consistencia de los datos son absolutamente vitales. SQL Server, uno de los sistemas más utilizados a nivel global, provee sofisticadas herramientas para el control de transacciones, permitiendo a los desarrolladores y administradores definir y controlar las operaciones para garantizar que los datos se mantengan seguros, coherentes y recuperables ante errores o fallos del sistema. En este informe se profundiza en la teoría, la sintaxis y las mejores prácticas referentes al manejo de transacciones y transacciones anidadas en SQL Server, con un enfoque en los objetivos de comprender la consistencia y atomicidad, implementar transacciones simples y anidadas, y documentar casos de prueba y manejo de fallos.
 
-**TEMA 4 " MANEJO DE PERMISOS A NIVEL DE USUARIOS DE BASE DE DATOS. "**
+### TEMA 4: Manejo de permisos a nivel de usuarios de base de datos
 Es el proceso mediante el cual se asignan, revocan o deniegan permisos específicos a usuarios o roles dentro de una base de datos, con el objetivo de controlar el acceso a objetos como tablas, vistas, procedimientos almacenados, funciones, esquemas y demás recursos. Permite minimizar los riesgos de modificaciones no autorizadas, garantizar la integridad de los datos y establecer un entorno seguro, donde cada usuario accede únicamente a los recursos necesarios para cumplir su función.
 
 ## CAPÍTULO III: METODOLOGÍA SEGUIDA 
 
- **a) Cómo se realizó el Trabajo Práctico**
+ ### a) Cómo se realizó el Trabajo Práctico
 Para iniciar el desarrollo del proyecto, se organizó una reunión entre los integrantes del grupo para definir el caso de estudio que abordaríamos a lo largo del trabajo. Una vez elegido el tema, para la primera parte de la entrega, se creó un repositorio en GitHub, donde cada miembro del equipo iría subiendo sus aportes para desarrollar las actividades asignadas y se elaboró el diagrama entidad-relación con su diccionario de datos para, posteriormente, avanzar con el modelo físico y el lote de datos con los que trabajaríamos.
 
 En la segunda parte del proyecto, distribuimos los temas de investigación entre los miembros del equipo a través de un sorteo. Realizamos reuniones periodicas virtuales para coordinar sobre los avanzes realizados.
 
- **b) Herramientas (Instrumentos y procedimientos)**
+### b) Herramientas (Instrumentos y procedimientos)
 - [SQL SERVER EXPRESS 22](https://www.microsoft.com/en-us/sql-server/sql-server-downloads)
 - [Visual Studio Code](https://code.visualstudio.com/download)
 - [Discord] (https://discord.com/)
@@ -165,7 +197,7 @@ Finalmente, la manera de invocación en el código es la característica más vi
 
 ### Desarrollo TEMA 2 "Optimización de consultas a través de índices"
 
-## ¿Qué es un índice en bases de datos relacionales?
+#### ¿Qué es un índice en bases de datos relacionales?
 
 Un **índice** es un conjunto de punteros ordenados lógicamente por los valores de una o varias claves. Estos punteros hacen referencia a registros de una tabla con el fin de agilizar su localización.
 
@@ -177,7 +209,7 @@ Esto permite un acceso más eficiente a los datos creando una “vía rápida”
 
 ---
 
-## ¿Por qué usar índices?
+#### ¿Por qué usar índices?
 
 Los índices se utilizan principalmente para **mejorar el rendimiento** de las consultas:
 
@@ -208,11 +240,11 @@ La base de datos:
 
 ---
 
-## Tipos de índices más utilizados
+#### Tipos de índices más utilizados
 
 A continuación se presentan los tipos principales que se trabajarán en este tema.
 
-### Índices agrupados (Clustered)
+#### Índices agrupados (Clustered)
 
 * Definen el **orden físico** en que se almacenan los datos dentro de la tabla.
 * Una tabla solo puede tener **un** índice agrupado.
@@ -228,7 +260,7 @@ WHERE Fecha BETWEEN '2025-01-01' AND '2025-01-31'
 
 ---
 
-### Índices no agrupados (Non-Clustered)
+#### Índices no agrupados (Non-Clustered)
 
 * No modifican el orden físico de los datos.
 * La tabla queda almacenada en un lugar y el índice en otro.
@@ -244,7 +276,7 @@ WHERE DNI = '40123456'
 
 ---
 
-### Índices únicos (Unique Index)
+#### Índices únicos (Unique Index)
 
 * Garantizan que no existan valores duplicados en la columna indexada.
 * Como mencionamos anteriormente, se generan automáticamente al definir una restricción `UNIQUE`.
@@ -256,7 +288,7 @@ Evitar registrar dos usuarios con el mismo email.
 
 ---
 
-### Índices compuestos (Composite Index)
+#### Índices compuestos (Composite Index)
 
 * Utilizan dos o más columnas de forma conjunta.
 * Mejoran el rendimiento cuando la consulta filtra por esas columnas en ese mismo orden.
@@ -272,7 +304,7 @@ WHERE IdPaciente = 5 AND Fecha >= '2025-01-01'
 
 ---
 
-## Consideraciones
+#### Consideraciones
 
 Aunque los índices mejoran la lectura de datos, también presentan desventajas:
 
@@ -283,7 +315,7 @@ Por esta razón, no se recomienda crear índices indiscriminadamente, sino solo 
 
 ---
 
-## Cómo crear un índice en SQL Server
+#### Cómo crear un índice en SQL Server
 
 Algunas palabras reservadas importantes:
 
@@ -291,7 +323,7 @@ Algunas palabras reservadas importantes:
 * `IX_<Tabla>_<Columna>`: convención común para nombrar índices.
 * `ON Tabla (Columna)`: indica la tabla y columna afectada.
 
-### Índice agrupado (Clustered)
+#### Índice agrupado (Clustered)
 
 ```sql
 CREATE CLUSTERED INDEX IX_Ventas_Fecha
@@ -300,7 +332,7 @@ ON Ventas (Fecha);
 
 ---
 
-### Índice no agrupado (Non-Clustered)
+#### Índice no agrupado (Non-Clustered)
 
 ```sql
 CREATE NONCLUSTERED INDEX IX_Persona_DNI
@@ -309,7 +341,7 @@ ON Persona (DNI);
 
 ---
 
-### Índice único (Unique Index)
+#### Índice único (Unique Index)
 
 ```sql
 CREATE UNIQUE INDEX UQ_Usuario_Email
@@ -318,7 +350,7 @@ ON Usuario (Email);
 
 ---
 
-### Índice compuesto (Composite Index)
+#### Índice compuesto (Composite Index)
 
 ```sql
 CREATE NONCLUSTERED INDEX IX_Atencion_Fecha_IdPaciente
@@ -334,7 +366,7 @@ ON Atencion (Fecha, IdPaciente);
 Una transacción es una unidad de trabajo indivisible que agrupa una o varias operaciones SQL, tratadas como un solo bloque lógico. El éxito o fracaso de una transacción determina si los cambios hechos a la base de datos son persistidos `COMMIT` o revertidos `ROLLBACK`.
 En SQL Server, toda operación de modificación de datos está implicada en una transacción. Por defecto, cada sentencia SQL es autocommit (transacción automática). Sin embargo, para escenarios complejos, se requiere la definición de **transacciones explícitas**, especialmente para asegurar la integridad en operaciones que involucran múltiples pasos.
 
- ### Las Garantías ACID
+ #### Las Garantías ACID
 
 Las propiedades **ACID (Atomicidad, Consistencia, Aislamiento y Durabilidad)** son el estándar que debe cumplir toda transacción para garantizar la fiabilidad en las bases de datos.
 
@@ -383,12 +415,12 @@ COMMIT TRANSACTION;   -- Confirma los cambios
 ROLLBACK TRANSACTION; -- Revierte todo
 ```
 
-### SAVEPOINT (Puntos de Guardado)
+#### SAVEPOINT (Puntos de Guardado)
 
 El comando `SAVE TRANSACTION` permite establecer puntos de guardado dentro de una transacción. Estos puntos sirven para posibilitar rollbacks parciales si una parte específica de la transacción falla, mientras que se mantienen los cambios previos al savepoint. Es una herramienta poderosa cuando se quiere preservar parte del trabajo dentro de una transacción, especialmente útil para NO perder todo si ocurre un error.
 Se puede tener múltiples SAVE TRANSACTION, pero solo podés hacer ROLLBACK a uno a la vez.
 
-## Control de Errores en Transacciones: TRY…CATCH
+### Control de Errores en Transacciones: TRY…CATCH
 
 SQL Server implementa el manejo estructurado de errores mediante las construcciones `TRY...CATCH`. Este mecanismo captura excepciones y permite evitar estados inválidos o transacciones abiertas, lo cual es clave para garantizar la consistencia y robustez del sistema.
 Dentro de los bloques `CATCH`, se pueden usar funciones como `ERROR_NUMBER()`, `ERROR_MESSAGE()`, `ERROR_LINE()`, entre otras, para obtener información detallada del error ocurrido. Sin `TRY...CATCH`, si ocurre un error (ej. violación de clave foránea, constraint, falta de capacidad), la transacción se cancela abruptamente y el usuario solo ve un mensaje genérico. Si una transacción falla y no se maneja, puede quedar abierta y bloquear recursos (tablas, filas), Con `TRY...CATCH`, siempre aseguramos un `ROLLBACK` o `COMMIT`, evitando bloqueos. Dentro del `CATCH`, podés verificar si la transacción está dañada (-1) o aún válida (1) utilizando `XACT_STATE()`
@@ -409,11 +441,11 @@ BEGIN CATCH --Mostrar errores justo al ROLLBACK que revierte toda la transaccion
 END CATCH;
 
 ```
- ### Uso de XACT_STATE()
+ #### Uso de XACT_STATE()
 
 `XACT_STATE()` es una función interna de SQL Server que te dice en qué estado se encuentra la transacción actual dentro de tu sesión. Es clave para manejar errores de forma segura en bloques `TRY...CATCH`. Si devuelve 1, se puede decidir confirmar o revertir. Si devuelve -1, no hay opción: solo se puede hacer ROLLBACK. Cuando su valor es 1 nos dice que hay una transacción activa y está en estado válido, se puede hacer `COMMIT` o `ROLLBACK`. Si su valor es 0 no hay ninguna transacción activa en la sesión. Si su valor es -1 hay una transacción activa pero está en estado dañado (por un error grave), por lo tanto solo se puede hacer `ROLLBACK`.
 
-### Modos de transacción en SQL Server
+#### Modos de transacción en SQL Server
 
 - **Transacciones de confirmación automática**: Es el modo por defecto. Cada instrucción SQL se ejecuta como una transacción individual. Si la instrucción tiene éxito, se confirma automáticamente. Si falla, se revierte. No requiere `BEGIN TRANSACTION`, `COMMIT` ni `ROLLBACK`.
 ```sql
@@ -458,7 +490,7 @@ Si no se hace `COMMIT` o `ROLLBACK`, la transacción queda abierta y puede bloqu
 
 - **Transacciones de ámbito de lote**: Se dan en escenarios donde está habilitado MARS (Multiple Active Result Sets), por ejemplo en aplicaciones cliente (ADO.NET, ODBC) que permiten ejecutar varios comandos en paralelo sobre la misma conexión. En ese contexto, una transacción explícita o implícita se convierte en una transacción de ámbito de lote: afecta a todas las instrucciones que forman parte de ese lote de ejecución. Si una instrucción falla dentro del lote, se puede hacer `ROLLBACK TRANSACTION` y se revierte todo el lote. Si todo sale bien, `COMMIT TRANSACTION` confirma el lote completo. Esto ocurre porque aunque los comandos se ejecuten en paralelo (debido a MARS), todos pertenecen a la misma transacción de lote. Se utiliza en aplicaciones cliente que necesitan ejecutar múltiples consultas en paralelo sin perder atomicidad.
 
-### Concepto de Anidamiento
+#### Concepto de Anidamiento
 
 Una transacción anidada se produce cuando, dentro del contexto de una transacción activa, se inicia otra transacción con `BEGIN TRANSACTION`. Aunque pareciera que se crean transacciones independientes, SQL Server en realidad mantiene un contador interno (@@TRANCOUNT), pero solo existen realmente dos estados: transacción abierta o no abierta. Todas las operaciones comparten el mismo contexto y log de transacción.
 SQL Server no permite transacciones verdaderamente independientes dentro de otras.
@@ -472,7 +504,7 @@ Solo el `COMMIT TRANSACTION` más externo (el que reduce @@TRANCOUNT a 0) realme
 
 Cualquier `ROLLBACK`, sin savepoint, revierte toda la cadena de transacciones anidadas y pone el contador a 0.
 
-### Ventaja de las transacciones
+#### Ventaja de las transacciones
 
 **Manejo de errores y recuperación**
 
@@ -486,7 +518,7 @@ Cualquier `ROLLBACK`, sin savepoint, revierte toda la cadena de transacciones an
 
 - Limita el acceso a los datos solo a las operaciones que se confirman (`commit`), añadiendo una capa de seguridad crucial en sistemas con datos sensibles.
 
- ### SCRIPT con ejemplos aplicados al proyecto
+ #### SCRIPT con ejemplos aplicados al proyecto
 > Acceder a la siguiente carpeta [scripts-> tema_3](script/tema3_Manejo_de_transacciones)
 
 ### Desarrollo TEMA 4 Manejo de permisos a nivel de usuario de base de datos
