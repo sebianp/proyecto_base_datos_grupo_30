@@ -96,7 +96,7 @@ Proin aliquet mauris id ex venenatis, eget fermentum lectus malesuada. Maecenas 
 Una transacción es una unidad de trabajo indivisible que agrupa una o varias operaciones SQL, tratadas como un solo bloque lógico. El éxito o fracaso de una transacción determina si los cambios hechos a la base de datos son persistidos `COMMIT` o revertidos `ROLLBACK`.
 En SQL Server, toda operación de modificación de datos está implicada en una transacción. Por defecto, cada sentencia SQL es autocommit (transacción automática). Sin embargo, para escenarios complejos, se requiere la definición de **transacciones explícitas**, especialmente para asegurar la integridad en operaciones que involucran múltiples pasos.
 
- ## Las Garantías ACID
+ ### Las Garantías ACID
 
 Las propiedades **ACID (Atomicidad, Consistencia, Aislamiento y Durabilidad)** son el estándar que debe cumplir toda transacción para garantizar la fiabilidad en las bases de datos.
 
@@ -108,7 +108,7 @@ Las propiedades **ACID (Atomicidad, Consistencia, Aislamiento y Durabilidad)** s
 
 **Durabilidad**: Una vez confirmados los cambios de una transacción, estos deben persistir aunque ocurran fallos de hardware o energía.
 
-## Sintaxis de Transacciones en SQL Server
+### Sintaxis de Transacciones en SQL Server
 
 SQL Server proporciona un conjunto de comandos Transact-SQL para definir y controlar transacciones explícitas:
 
@@ -133,7 +133,7 @@ ROLLBACK TRANSACTION;
 PRINT @@TRANCOUNT; -- Devuelve 0 (se cancelan todas)
 ```
 
-## Sintaxis básica
+**Sintaxis básica**
 
 ```sql
 BEGIN TRANSACTION;
@@ -145,12 +145,12 @@ COMMIT TRANSACTION;   -- Confirma los cambios
 ROLLBACK TRANSACTION; -- Revierte todo
 ```
 
-## SAVEPOINT (Puntos de Guardado)
+### SAVEPOINT (Puntos de Guardado)
 
 El comando `SAVE TRANSACTION` permite establecer puntos de guardado dentro de una transacción. Estos puntos sirven para posibilitar rollbacks parciales si una parte específica de la transacción falla, mientras que se mantienen los cambios previos al savepoint. Es una herramienta poderosa cuando se quiere preservar parte del trabajo dentro de una transacción, especialmente útil para NO perder todo si ocurre un error.
 Se puede tener múltiples SAVE TRANSACTION, pero solo podés hacer ROLLBACK a uno a la vez.
 
-**Control de Errores en Transacciones: TRY…CATCH**
+## Control de Errores en Transacciones: TRY…CATCH
 
 SQL Server implementa el manejo estructurado de errores mediante las construcciones `TRY...CATCH`. Este mecanismo captura excepciones y permite evitar estados inválidos o transacciones abiertas, lo cual es clave para garantizar la consistencia y robustez del sistema.
 Dentro de los bloques `CATCH`, se pueden usar funciones como `ERROR_NUMBER()`, `ERROR_MESSAGE()`, `ERROR_LINE()`, entre otras, para obtener información detallada del error ocurrido. Sin `TRY...CATCH`, si ocurre un error (ej. violación de clave foránea, constraint, falta de capacidad), la transacción se cancela abruptamente y el usuario solo ve un mensaje genérico. Si una transacción falla y no se maneja, puede quedar abierta y bloquear recursos (tablas, filas), Con `TRY...CATCH`, siempre aseguramos un `ROLLBACK` o `COMMIT`, evitando bloqueos. Dentro del `CATCH`, podés verificar si la transacción está dañada (-1) o aún válida (1) utilizando `XACT_STATE()`
@@ -171,11 +171,11 @@ BEGIN CATCH --Mostrar errores justo al ROLLBACK que revierte toda la transaccion
 END CATCH;
 
 ```
+ ### Uso de XACT_STATE()
 
-**Uso de XACT_STATE()**
 `XACT_STATE()` es una función interna de SQL Server que te dice en qué estado se encuentra la transacción actual dentro de tu sesión. Es clave para manejar errores de forma segura en bloques `TRY...CATCH`. Si devuelve 1, se puede decidir confirmar o revertir. Si devuelve -1, no hay opción: solo se puede hacer ROLLBACK. Cuando su valor es 1 nos dice que hay una transacción activa y está en estado válido, se puede hacer `COMMIT` o `ROLLBACK`. Si su valor es 0 no hay ninguna transacción activa en la sesión. Si su valor es -1 hay una transacción activa pero está en estado dañado (por un error grave), por lo tanto solo se puede hacer `ROLLBACK`.
 
-## Modos de transacción en SQL Server
+### Modos de transacción en SQL Server
 
 - **Transacciones de confirmación automática**: Es el modo por defecto. Cada instrucción SQL se ejecuta como una transacción individual. Si la instrucción tiene éxito, se confirma automáticamente. Si falla, se revierte. No requiere `BEGIN TRANSACTION`, `COMMIT` ni `ROLLBACK`.
 ```sql
@@ -218,23 +218,23 @@ COMMIT TRANSACTION;
 ```
 Si no se hace `COMMIT` o `ROLLBACK`, la transacción queda abierta y puede bloquear recursos.
 
-- **Transacciones de ámbito de lote**: Una transacción implícita o explícita de Transact-SQL que se inicia en una sesión de MARS (conjuntos de resultados activos múltiples) y se convierte en una transacción de ámbito de lote.
+- **Transacciones de ámbito de lote**: Se dan en escenarios donde está habilitado MARS (Multiple Active Result Sets), por ejemplo en aplicaciones cliente (ADO.NET, ODBC) que permiten ejecutar varios comandos en paralelo sobre la misma conexión. En ese contexto, una transacción explícita o implícita se convierte en una transacción de ámbito de lote: afecta a todas las instrucciones que forman parte de ese lote de ejecución. Si una instrucción falla dentro del lote, se puede hacer `ROLLBACK TRANSACTION` y se revierte todo el lote. Si todo sale bien, `COMMIT TRANSACTION` confirma el lote completo. Esto ocurre porque aunque los comandos se ejecuten en paralelo (debido a MARS), todos pertenecen a la misma transacción de lote. Se utiliza en aplicaciones cliente que necesitan ejecutar múltiples consultas en paralelo sin perder atomicidad.
 
-## Concepto de Anidamiento
+### Concepto de Anidamiento
 
 Una transacción anidada se produce cuando, dentro del contexto de una transacción activa, se inicia otra transacción con `BEGIN TRANSACTION`. Aunque pareciera que se crean transacciones independientes, SQL Server en realidad mantiene un contador interno (@@TRANCOUNT), pero solo existen realmente dos estados: transacción abierta o no abierta. Todas las operaciones comparten el mismo contexto y log de transacción.
 SQL Server no permite transacciones verdaderamente independientes dentro de otras.
 
 Funcionamiento Interno y Comportamiento de COMMIT y ROLLBACK
-Cada `BEGIN TRAN` incrementa @@TRANCOUNT en uno.
+Cada `BEGIN TRANSACTION` incrementa @@TRANCOUNT en uno.
 
-Cada `COMMIT TRAN` decrementa @@TRANCOUNT en uno.
+Cada `COMMIT TRANSACTION` decrementa @@TRANCOUNT en uno.
 
-Solo el `COMMIT TRAN` más externo (el que reduce @@TRANCOUNT a 0) realmente escribe los cambios en la base de datos.
+Solo el `COMMIT TRANSACTION` más externo (el que reduce @@TRANCOUNT a 0) realmente escribe los cambios en la base de datos.
 
 Cualquier `ROLLBACK`, sin savepoint, revierte toda la cadena de transacciones anidadas y pone el contador a 0.
 
-## Ventaja de las transacciones
+### Ventaja de las transacciones
 
 **Manejo de errores y recuperación**
 
@@ -248,21 +248,21 @@ Cualquier `ROLLBACK`, sin savepoint, revierte toda la cadena de transacciones an
 
 - Limita el acceso a los datos solo a las operaciones que se confirman (`commit`), añadiendo una capa de seguridad crucial en sistemas con datos sensibles.
 
-**SCRIPT con ejemplos aplicados al proyecto**
+ ### SCRIPT con ejemplos aplicados al proyecto
 > Acceder a la siguiente carpeta [scripts-> tema_3](script/tema3_Manejo_de_transacciones)
 
 
 ## CAPÍTULO V: CONCLUSIONES
 
-Nunc sollicitudin purus quis ante sodales luctus. Proin a scelerisque libero, vitae pharetra lacus. Nunc finibus, tellus et dictum semper, nisi sem accumsan ligula, et euismod quam ex a tellus. 
+**Manejo de transacciones y transacciones anidadas**: A traves de la investigación y estudio del tema se pudo concluir que el uso de transacciones en SQL Server constituye una herramienta esencial para asegurar la integridad y consistencia de los datos. Al agrupar operaciones en bloques lógicos, se garantiza que los cambios se ejecuten de manera completa o se reviertan en caso de error, evitando estados intermedios que comprometan la base de datos. Las transacciones anidadas, aunque no permiten confirmaciones parciales, ofrecen una estructura modular que facilita el control de procesos complejos y la coordinación entre distintos procedimientos. Implementar correctamente transacciones y savepoints según las necesidades del sistema no solo protege la confiabilidad de la información, sino que también optimiza la eficiencia operativa y la seguridad en entornos multiusuario. Los objetivos planteados por la catedra fueron alcanzados a traves de distintas pruebas que permitieron una mejor comprensión del uso de transacciones y su importancia en las bases de datos.
 
 
 
 ## BIBLIOGRAFÍA DE CONSULTA
 
- 1. https://www.datacamp.com/es/blog/acid-transactions
- 2. https://programacion.net/articulo/transacciones_en_sql_server_299
- 3. https://learn.microsoft.com/es-es/sql/t-sql/language-elements/transactions-transact-sql?view=sql-server-ver17
+ 1. DataCamp (2023). Transacciones ACID: qué son y por qué importan. Blog de DataCamp. Disponible en: https://www.datacamp.com/es/blog/acid-transactions.
+ 2. Programacion.net (s.f.). Transacciones en SQL Server. Artículo técnico en Programacion.net. . Disponible en: https://programacion.net/articulo/transacciones_en_sql_server_299.
+ 3. Microsoft Docs (2025). Transacciones (Transact-SQL). Documentación oficial de Microsoft Learn. Disponible en: https://learn.microsoft.com/es-es/sql/t-sql/language-elements/transactions-transact-sql?view=sql-server-ver17.
  4. List item
  5. List item
 
