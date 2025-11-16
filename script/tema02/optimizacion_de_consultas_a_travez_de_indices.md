@@ -1,54 +1,165 @@
-# Optimizacion de consultas a traves de indices.
+# Optimización de consultas a través de índices
 
 ## ¿Qué es un índice en bases de datos relacionales?
 
-Un **índice** es un conjunto de punteros ordenados lógicamente por los valores de una o varias claves. Éstos pueden hacer referencia a registros de una tabla que será el foco del tema actual.
+Un **índice** es un conjunto de punteros ordenados lógicamente por los valores de una o varias claves. Estos punteros hacen referencia a registros de una tabla con el fin de agilizar su localización.
 
-En el siguiente diagrama tenemos un índice basado en los números de empleados de una tabla. Este valor de clave proporciona un puntero a las filas de la tabla. Por ejemplo, el número de empleado 19 apunta al empleado KMP. Un índice permite un acceso eficaz a las filas de una tabla creando una vía de acceso a los datos mediante punteros.
+En el siguiente diagrama tenemos un índice basado en los números de empleados de una tabla. Este valor de clave proporciona un puntero a las filas correspondientes. Por ejemplo, el número de empleado 19 apunta al empleado KMP.
 
-![diagrama_relacional](https://github.com/sebianp/proyecto_base_datos_grupo_30/blob/main/doc/tema_02/representacion_indices.png)
+Esto permite un acceso más eficiente a los datos creando una “vía rápida” hacia ellos y evitando que el motor recorra fila por fila la tabla.
 
+![diagrama\_relacional](https://github.com/sebianp/proyecto_base_datos_grupo_30/blob/main/doc/tema_02/representacion_indices.png)
 
-## Como crear un índice en SQL Server
-
-- `CREATE INDEX`: Crea un índice.
-- `IX_<Tabla>_<Columna>`: Define el nombre del índice.
-- `ON Tabla (Pk_Nombre)`: define sobre qué tabla y columna se aplicará.
-
-## Índices agrupados y no agrupados
-
-### Agrupados
-
-Un índice agrupado define el orden en el cual los datos son físicamente almacenados en una tabla. Los datos de las tablas pueden ser ordenados sólo en una forma, por lo tanto, sólo puede haber un índice agrupado por tabla. En SQL Server, la restricción de llave primaria crea automáticamente un índice agrupado en esa columna en particular.
-
-### No agrupados
-
-Un índice no agrupado no ordena los datos físicos dentro de la tabla. De hecho, un índice no agrupado es agrupado en un solo lugar y los datos de la tabla son almacenados en otro lugar. Esto es similar a un libro de texto donde el contenido del libro está localizado en un lugar y el índice está localizado en otro. Esto permite tener más de un índice no agrupado por tabla.
+---
 
 ## ¿Por qué usar índices?
 
-Se usan principalmente para mejorar el rendimiento. En la mayoría de los casos, el acceso a los datos es más rápido con un índice.
+Los índices se utilizan principalmente para **mejorar el rendimiento** de las consultas:
 
- `Sin índices:` El motor tiene que hacer un “table scan”, leyendo fila por fila.
+* **Sin índices:** el motor realiza un *Table Scan*, es decir, lee toda la tabla.
+* **Con índices:** puede realizar un *Index Seek* o un *Index Scan*, siendo más eficiente.
 
- `Con índices:` El motor hace un "index seek" o "index scan", es más rápido.
+Son especialmente útiles cuando las consultas incluyen:
+
+* `WHERE`
+* `JOIN`
+* `ORDER BY`
+* `GROUP BY`
+
+También son importantes para garantizar **unicidad** en datos como DNI, correo electrónico, etc. Esto es porque un índice único es el mecanismo que usa la mayoría de las bases de datos para hacer cumplir una restricción UNIQUE.
+
+Cuando hacemos
+
+```
+ALTER TABLE Persona
+ADD CONSTRAINT UQ_Persona_DNI UNIQUE (DNI);
+```
+
+La base de datos:
+
+1. Crea automáticamente un índice único sobre DNI.
+2. Usa el índice para verificar que no haya duplicados.
+3. De paso, mejora búsquedas por ese campo.
+
+---
+
+## Tipos de índices más utilizados
+
+A continuación se presentan los tipos principales que se trabajarán en este tema.
+
+### Índices agrupados (Clustered)
+
+* Definen el **orden físico** en que se almacenan los datos dentro de la tabla.
+* Una tabla solo puede tener **un** índice agrupado.
+* SQL Server crea automáticamente un índice agrupado cuando se define una clave primaria (a menos que se indique lo contrario).
+* Optimizan las consultas que trabajan con rangos (por ejemplo, fechas, claves primarias compuestas, etc).
+
+**Ejemplo de uso:**
+Historial de ventas por fecha:
+
+```
+WHERE Fecha BETWEEN '2025-01-01' AND '2025-01-31'
+```
+
+---
+
+### Índices no agrupados (Non-Clustered)
+
+* No modifican el orden físico de los datos.
+* La tabla queda almacenada en un lugar y el índice en otro.
+* Se pueden crear **varios** índices no agrupados por tabla.
+* Son ideales para columnas que habitualmente se utilizan en filtros.
+
+**Ejemplo de uso:**
+Consultas por DNI o Email:
+
+```
+WHERE DNI = '40123456'
+```
+
+---
+
+### Índices únicos (Unique Index)
+
+* Garantizan que no existan valores duplicados en la columna indexada.
+* Como mencionamos anteriormente, se generan automáticamente al definir una restricción `UNIQUE`.
+
+Ejemplos típicos: DNI, CUIT, correo electrónico de usuario.
+
+**Ejemplo de uso:**
+Evitar registrar dos usuarios con el mismo email.
+
+---
+
+### Índices compuestos (Composite Index)
+
+* Utilizan dos o más columnas de forma conjunta.
+* Mejoran el rendimiento cuando la consulta filtra por esas columnas en ese mismo orden.
+
+Ejemplo: `(Fecha, IdPaciente)`
+
+**Ejemplo de uso:**
+Consultas combinadas:
+
+```
+WHERE IdPaciente = 5 AND Fecha >= '2025-01-01'
+```
+
+---
 
 ## Consideraciones
 
-La **creación masiva de índices** en una tabla, conlleva efectos adversos:
+Aunque los índices mejoran la lectura de datos, también presentan desventajas:
 
-- Cada índice ocupa espacio de almacenamiento en nuestra base de datos.
-- La velocidad en las operaciones de insert, update y delete puede verse afectada, ya que los índices de la tabla deben ser actualizados, ante cada una de estas acciones.
+* Ocupan espacio adicional en el almacenamiento.
+* Las operaciones `INSERT`, `UPDATE` y `DELETE` se vuelven más costosas, ya que el motor debe actualizar el índice en cada modificación.
 
-## Ejemplo práctico
+Por esta razón, no se recomienda crear índices indiscriminadamente, sino solo aquellos que realmente aporten rendimiento.
+
+---
+
+## Cómo crear un índice en SQL Server
+
+Algunas palabras reservadas importantes:
+
+* `CREATE INDEX`: crea un índice.
+* `IX_<Tabla>_<Columna>`: convención común para nombrar índices.
+* `ON Tabla (Columna)`: indica la tabla y columna afectada.
+
+### Índice agrupado (Clustered)
 
 ```sql
--- index no agrupado
-CREATE INDEX IX_Atencion_idPaciente
-ON Atencion (idPaciente);
-
--- index agrupado
-CREATE INDEX IX_Atencion_Paciente_Fecha
-ON Atencion (idPaciente, fechaHora);
-
+CREATE CLUSTERED INDEX IX_Ventas_Fecha
+ON Ventas (Fecha);
 ```
+
+---
+
+### Índice no agrupado (Non-Clustered)
+
+```sql
+CREATE NONCLUSTERED INDEX IX_Persona_DNI
+ON Persona (DNI);
+```
+
+---
+
+### Índice único (Unique Index)
+
+```sql
+CREATE UNIQUE INDEX UQ_Usuario_Email
+ON Usuario (Email);
+```
+
+---
+
+### Índice compuesto (Composite Index)
+
+```sql
+CREATE NONCLUSTERED INDEX IX_Atencion_Fecha_IdPaciente
+ON Atencion (Fecha, IdPaciente);
+```
+
+---
+ ### SCRIPT con ejemplos aplicados al proyecto
+> Acceder a la siguiente carpeta [scripts-> tema_2](script/tema02)
