@@ -1,4 +1,6 @@
-/*Utilizaremos la tabla Paciente para las operaciones CRUD, ya que incluye campos esenciales como nombreCompleto, dni, fechaNacimiento y contacto.
+/*
+Utilizaremos la tabla Paciente para las operaciones CRUD, ya que incluye campos esenciales como nombreCompleto, dni, 
+fechaNacimiento y contacto.
 
  Procedimiento para Insertar Registros (INSERT)
  Procedimiento SP_InsertarPaciente que acepta los parámetros necesarios para crear un nuevo registro en la tabla Paciente.
@@ -101,6 +103,40 @@ EXEC SP_InsertarPaciente 'Ledesma, Ariel', '71777777', '1989-05-11', 'Masculino'
 EXEC SP_InsertarPaciente 'Medina, Julieta', '71888888', '1994-06-05', 'Femenino', '4133333333';
 EXEC SP_InsertarPaciente 'Silveyra, Franco', '71999999', '1996-07-08', 'Masculino', NULL;
 EXEC SP_InsertarPaciente 'Barrios, Daniela', '72010101', '1997-08-01', 'Femenino', '4144444444';
+
+/*Comparación de Eficiencia (Operaciones Directas vs. Procedimientos y Funciones)
+La elección entre utilizar sentencias SQL directas (DML) o módulos almacenados (Procedimientos y Funciones) tiene implicaciones 
+directas en el rendimiento, la mantenibilidad y la seguridad del sistema.
+
+Sentencias SQL Directas (DML/SELECT)
+Optimización y Compilación: La consulta se analiza, optimiza y compila (parsing y traducción lógica) en cada ejecución.
+Tráfico de Red: Se envía el texto completo de la sentencia SQL a través de la red en cada llamada.
+Seguridad: Mayor riesgo de inyección SQL si la entrada del usuario se concatena directamente en la cadena de consulta.
+Rendimiento de UDFs Escalares: Las consultas completas pueden beneficiarse del paralelismo.
+Mantenibilidad: La lógica de negocio se dispersa en la aplicación, lo que dificulta la actualización.
+
+
+Procedimientos y Funciones Almacenadas
+Optimización y Compilación: Se compilan la primera vez que se ejecutan, y el motor de la base de datos almacena y reutiliza el plan
+ de ejecución optimizado en ejecuciones posteriores, lo que lleva a un procesamiento más rápido.
+Tráfico de Red: Solo se envía la llamada para ejecutar el procedimiento o función (EXEC SP_Nombre... o SELECT FN_Nombre...), lo que reduce el 
+tráfico de red entre el cliente y el servidor.
+Seguridad: Usar parámetros de procedimientos ayuda a proteger contra ataques por inyección de código SQL, ya que la entrada de parámetros se 
+trata como un valor literal y no como código ejecutable.
+Rendimiento de UDFs Escalares: Las funciones escalares de Transact-SQL solo se pueden ejecutar en un único subproceso (plan de ejecución en serie),
+ lo que puede impedir la paralelización y afectar negativamente el rendimiento en consultas complejas que involucran grandes volúmenes de datos.
+Mantenibilidad: La lógica de negocio está encapsulada en la capa de datos. Si el diseño subyacente de la base de datos cambia, solo se deben
+ actualizar los procedimientos/funciones, manteniendo la aplicación cliente independiente de los cambios.
+
+En resumen, la efectividad en las operaciones CRUD mejora con los procedimientos almacenados, ya que proporcionan una capa de abstracción, 
+aumentan la seguridad y optimizan el rendimiento al reutilizar planes de ejecución. 
+*/
+
+
+
+
+
+
 
 
 /* Modificación y Eliminación con Procedimientos. Realizar UPDATE invocando el procedimiento
@@ -222,3 +258,5 @@ RETURN
 select * from Atencion;--ver datos antes de consultar
 
 SELECT * FROM dbo.FN_ListarAtencionesUbicacionDia(1, '20250110');
+
+
