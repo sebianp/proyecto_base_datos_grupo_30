@@ -56,16 +56,18 @@ Devolver un valor de estado a un programa que realiza una llamada para indicar s
 **Funciones definidas por el usuario**
 Las funciones definidas por el usuario de SQL Server son rutinas que aceptan parámetros, realizan una acción, como un cálculo complejo, y devuelven el resultado de esa acción como un valor. El valor devuelto puede ser un valor escalar único o un conjunto de resultados.
 
-**TEMA 2 " Optimizacion de consultas a traves de indices. "** 
+**TEMA 2 " OPTIMIZACION DE CONSULTAS A TRAVES DE INDICES. "** 
 
 El uso de índices representa una de las técnicas esenciales para optimizar el rendimiento en sistemas de gestión de bases de datos relacionales. A medida que la cantidad de registros crece, la necesidad de acceder a los datos de manera eficiente se vuelve fundamental para garantizar tiempos de respuesta adecuados y una correcta experiencia de uso en aplicaciones de software.
 
 En el presente informe se estudian los tipos principales de índices soportados por SQL Server, su utilidad, criterios para su creación y las consideraciones prácticas respecto al impacto que generan en operaciones de lectura y escritura. Asimismo, se demuestra la mejora en el rendimiento mediante pruebas controladas, comparando tiempos y planes de ejecución antes y después de la aplicación de índices adecuados. El objetivo es comprender cuándo y por qué utilizar índices.
 
-**TEMA 3 "Manejo de transacciones y transacciones anidadas"**
+**TEMA 3 " MANEJO DE TRANSACCIONES Y TRANSACCIONES ANIDADAS. "**
 
 El manejo adecuado de transacciones es un pilar clave en los sistemas de gestión de bases de datos relacionales, especialmente en contextos empresariales críticos donde la integridad y consistencia de los datos son absolutamente vitales. SQL Server, uno de los sistemas más utilizados a nivel global, provee sofisticadas herramientas para el control de transacciones, permitiendo a los desarrolladores y administradores definir y controlar las operaciones para garantizar que los datos se mantengan seguros, coherentes y recuperables ante errores o fallos del sistema. En este informe se profundiza en la teoría, la sintaxis y las mejores prácticas referentes al manejo de transacciones y transacciones anidadas en SQL Server, con un enfoque en los objetivos de comprender la consistencia y atomicidad, implementar transacciones simples y anidadas, y documentar casos de prueba y manejo de fallos.
 
+**TEMA 4 " MANEJO DE PERMISOS A NIVEL DE USUARIOS DE BASE DE DATOS. "**
+Es el proceso mediante el cual se asignan, revocan o deniegan permisos específicos a usuarios o roles dentro de una base de datos, con el objetivo de controlar el acceso a objetos como tablas, vistas, procedimientos almacenados, funciones, esquemas y demás recursos. Permite minimizar los riesgos de modificaciones no autorizadas, garantizar la integridad de los datos y establecer un entorno seguro, donde cada usuario accede únicamente a los recursos necesarios para cumplir su función.
 
 ## CAPÍTULO III: METODOLOGÍA SEGUIDA 
 
@@ -91,7 +93,7 @@ En la segunda parte del proyecto, distribuimos los temas de investigación entre
 Acceso al documento [PDF](doc/diccionario_datos.pdf) del diccionario de datos.
 
 
-### Desarrollo TEMA 1 "----"
+### Desarrollo TEMA 1 "PROCEDIMIENTOS Y FUNCIONES ALMACENADAS"
 
 **FUNCION**
 
@@ -486,6 +488,156 @@ Cualquier `ROLLBACK`, sin savepoint, revierte toda la cadena de transacciones an
 
  ### SCRIPT con ejemplos aplicados al proyecto
 > Acceder a la siguiente carpeta [scripts-> tema_3](script/tema3_Manejo_de_transacciones)
+
+### Desarrollo TEMA 4 Manejo de permisos a nivel de usuario de base de datos
+La asignación de permisos a nivel de usuario en una base de datos es fundamental para garantizar la seguridad y la integridad de la información. Al restringir el acceso únicamente a los usuarios autorizados, se minimiza el riesgo de modificaciones indebidas o errores operativos.
+Por ejemplo:
+Los analistas de datos pueden ser asignados a un rol con permisos de solo lectura, permitiéndoles realizar consultas sin alterar los datos.
+El administrador de la base de datos, en cambio, requiere permisos completos para gestionar estructuras, usuarios y operaciones críticas.
+
+#### Aplicación en nuestro proyecto 
+Nos enfocamos en implementar una estrategia de permisos basada en el motor de base de datos, utilizando usuarios y roles definidos a nivel de base de datos. Para ello se configuró la base de datos en modo mixto (autenticación integrada con windows y por usuario de base de datos).
+
+**Permisos a nivel de Usuarios de base de datos**
+El manejo de permisos a nivel de usuario es el conjunto de acciones destinadas a controlar qué operaciones puede realizar cada usuario dentro de una base de datos. Esto incluye la capacidad de leer información, modificar registros, ejecutar procedimientos almacenados, crear o alterar objetos, entre otras tareas. La asignación de estos permisos se realiza de forma explícita, ya sea directamente al usuario o, preferentemente, a través de roles que agrupan funciones similares.
+En nuestro proyecto se definieron dos perfiles de usuario con distintos niveles de acceso:
+
+**Analista de datos:** cuenta con permisos de solo lectura, lo que le permite consultar información sin modificarla.
+**Administrador de base de datos:** requiere permisos completos para gestionar estructuras, usuarios y operaciones críticas.
+Para implementar esta estrategia, se configuraron los inicios de sesión y usuarios correspondientes:
+```USE PROYECTO_MOVICAPS;
+
+-- Crear inicios de sesión
+CREATE LOGIN administrador WITH PASSWORD = '#*1userAdm1n';
+CREATE LOGIN analista WITH PASSWORD = '*#2userAn4l1st';
+
+-- Crear usuarios de base de datos asociados
+CREATE USER administrador FOR LOGIN administrador;
+CREATE USER analista FOR LOGIN analista;
+```
+**Asignación de permisos**
+Una vez creados los usuarios, se les concede acceso a la base de datos. Sin embargo, no reciben automáticamente permisos sobre los objetos (tablas, vistas, procedimientos, etc.). Por lo tanto, se deben asignar explícitamente los permisos necesarios según el rol funcional de cada usuario con las instrucciones GRANT, REVOKE y DENY.
+
+Tipos de permisos que se pueden manejar.
+Tipo de permiso	| Aplicación común
+---|---
+SELECT |	Lectura de datos
+INSERT |	Agregar registros
+UPDATE |	Modificar datos
+DELETE |	Eliminar registros
+EXECUTE |	Ejecutar procedimientos
+ALTER, CREATE, DROP |	Modificaciones estructurales
+CONTROL |	Control total sobre un objeto
+
+Para el usuario administrador se requiere el permiso CONTROL, que según la jerarquía de permisos de SQL Server incluye todos los demás permisos de la base de datos, tales como ALTER, SELECT, INSERT, UPDATE, DELETE, entre otros. Este permiso otorga control total sobre la base de datos.
+
+En cambio, para el usuario analista se otorga únicamente el permiso SELECT, que representa el nivel más básico de acceso posible, limitado a la lectura de datos.
+```
+-- Permisos para el administrador (control total)
+GRANT CONTROL ON DATABASE::PROYECTO_MOVICAPS TO administrador;
+
+-- Permisos para el analista (sólo lectura)
+GRANT SELECT ON DATABASE::PROYECTO_MOVICAPS TO analista;
+```
+Teniendo el procedimiento almacenado SP_InsertarPaciente creado para el tema 1, se otorgó al usuario analista el permiso de ejecución mediante el siguiente comando:
+```
+-- Permiso de ejecución sobre un procedimiento específico
+GRANT EXECUTE ON OBJECT::dbo.SP_InsertarPaciente TO analista;
+```
+**Prueba de acceso**
+Para validar los permisos, se realizaron pruebas de inserción en la tabla Paciente con ambos usuarios:
+
+Usuario analista (solo lectura):
+```
+EXECUTE AS USER = 'analista';
+INSERT INTO Paciente (nombreCompleto, dni, fechaNacimiento, sexo, contacto)
+    VALUES ('Ramirez, Elias', '10111222', '19900515', 'Masculino', '3624123456');
+```
+ Al intentar ejecutar insert sobre la tabla Paciente, se obtuvo el siguiente error:
+```The INSERT permission was denied on the object 'Paciente', database 'PROYECTO_MOVICAPS', schema 'dbo'.```
+Esto confirma que el usuario analista no posee permisos de escritura sobre la tabla.
+
+**Usuario administrador (control total):** El mismo insert ejecutado con el usuario administrador se realizó correctamente, ya que este cuenta con el permiso control sobre la base de datos, lo que incluye todos los permisos de modificación.
+```EXECUTE AS USER = 'administrador';
+INSERT INTO Paciente (nombreCompleto, dni, fechaNacimiento, sexo, contacto)
+    VALUES ('Ramirez, Elias', '45342321', '19900515', 'Masculino', '3624123456');
+```
+**Usuario analista a través del procedimiento almacenado:** Finalmente, se probó un insert mediante el procedimiento almacenado SP_InsertarPaciente. En este caso, el usuario analista pudo ejecutar la operación correctamente, ya que se le había concedido explícitamente el permiso EXECUTE sobre dicho procedimiento.
+```
+EXECUTE AS USER = 'analista';
+EXEC SP_InsertarPaciente 
+    @p_nombreCompleto = 'Castro, Hector',
+    @p_dni = '30333444',
+    @p_fechaNacimiento = '20050101',
+    @p_sexo = 'Masculino';
+```
+Se pudo concluir que, el usuario administrador pudo realizar inserciones directas en la tabla gracias al permiso control. El usuario analista no pudo insertar directamente, ya que solo tiene permiso de lectura (select). Sin embargo, el analista sí pudo insertar registros a través del procedimiento almacenado, debido al permiso execute  concedido específicamente sobre dicho objeto
+
+**Permisos a nivel de rol de usuarios de base de datos**
+
+En SQL Server existen dos tipos de roles de base de datos:
+
+**Roles fijos de base de datos:** son un conjunto de roles preconfigurados que proporcionan grupos prácticos de permisos a nivel de base de datos.
+
+**Roles definidos por el usuario:** se crean mediante la instrucción CREATE ROLE y permiten representar grupos de usuarios con permisos comunes, facilitando la administración y supervisión de permisos.
+
+Los permisos se conceden o deniegan a las entidades de seguridad (inicios de sesión, usuarios y roles) mediante la instrucción GRANT, y se pueden administrar con DENY y REVOKE. Para agregar miembros a un rol de base de datos se utiliza ALTER ROLE ... ADD MEMBER
+
+En el proyecto MOVICAPS se definieron dos usuarios más:
+
+**Auditor:** enfocado en la revisión y control de la información.
+
+**Mantenimiento:** encargado de la operación y mantenimiento del sistema
+```
+USE PROYECTO_MOVICAPS; 
+
+-- Crear inicios de sesión
+CREATE LOGIN auditor WITH PASSWORD = '**=aud1t0rr';
+CREATE LOGIN mantenimiento WITH PASSWORD = '..*12m4nt3nim';
+
+-- Crear usuarios asociados a los inicios de sesión
+CREATE USER auditor FOR LOGIN auditor;
+CREATE USER mantenimiento FOR LOGIN mantenimiento;
+```
+El usuario auditor requiere acceso de lectura a las tablas Paciente, UnidadMovil y Atencion. Para ello se creó un rol de solo lectura:
+```
+-- Crear el rol de solo lectura
+CREATE ROLE lectorAuditor;
+
+-- Conceder permisos de lectura sobre las tablas específicas
+GRANT SELECT ON OBJECT::dbo.Paciente TO lectorAuditor;
+GRANT SELECT ON OBJECT::dbo.UnidadMovil TO lectorAuditor;
+GRANT SELECT ON OBJECT::dbo.Atencion TO lectorAuditor;
+
+-- Agregar el usuario auditor al rol
+ALTER ROLE lectorAuditor ADD MEMBER auditor;
+```
+**Prueba de acceso**
+Se verificó el comportamiento de ambos usuarios al intentar leer el contenido de la tabla Paciente:
+
+**Usuario mantenimiento (sin permisos de lectura):**
+```
+EXECUTE AS USER = 'mantenimiento';
+SELECT p.nombreCompleto, p.dni, p.fechaNacimiento, p.sexo, p.contacto
+FROM dbo.Paciente p;
+```
+Siendo el resultado el siguiente error:
+```
+The SELECT permission was denied on the object 'Paciente', database 'PROYECTO_MOVICAPS', schema 'dbo'.
+```
+**Usuario auditor (miembro del rol lectorAuditor):**
+```
+EXECUTE AS USER = 'auditor';
+SELECT p.nombreCompleto, p.dni, p.fechaNacimiento, p.sexo, p.contacto
+FROM dbo.Paciente p;
+```
+La consulta se ejecutó correctamente, mostrando los datos de la tabla.
+
+Se puede concluir que el usuario mantenimiento no pudo acceder a la tabla Paciente porque no pertenece al rol de lectura. 
+
+El usuario auditor, al ser miembro del rol lectorAuditor, sí pudo consultar la información.
+
+> Acceder a la siguiente carpeta para la descripción completa del tema [scripts-> tema_4](script/tema04/manejo_de_permisos_a_nivel_de_usuario_de_base_de_datos.sql)
 
 
 ## CAPÍTULO V: CONCLUSIONES
