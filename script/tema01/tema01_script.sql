@@ -53,28 +53,54 @@ END;
 Este script utiliza sentencias DML directas.*/
 
 -- SCRIPT LOTE A: Inserción directa en la tabla Paciente (Guardar como script)
-INSERT INTO Paciente (nombreCompleto, dni, fechaNacimiento, sexo, contacto) 
-VALUES 
-('Ramirez, Elias', '10111222', '19900515', 'Masculino', '3624123456'),
-('Pereyra, Daniela', '20222333', '19871120', 'Femenino', '3624987654');
+INSERT INTO Paciente (nombreCompleto, dni, fechaNacimiento, sexo, contacto)
+VALUES
+('Molina, Esteban', '60111111', '1990-01-10', 'Masculino', '3811111111'),
+('Rivas, Noelia', '60222222', '1992-02-15', 'Femenino', '3822222222'),
+('Cano, Federico', '60333333', '1988-03-30', 'Masculino', NULL),
+('Bustos, Melina', '60444444', '1995-04-01', 'Femenino', '3833333333'),
+('Sanchez, Bruno', '60555555', '1993-05-20', 'Masculino', '3844444444'),
+('Luna, Carla', '60666666', '1991-06-07', 'Femenino', NULL),
+('Ponce, Diego', '60777777', '1989-07-11', 'Masculino', '3855555555'),
+('Ayala, Mariana', '60888888', '1994-08-05', 'Femenino', '3866666666'),
+('Ruiz, Tomas', '60999999', '1996-09-08', 'Masculino', NULL),
+('Farias, Florencia', '61010101', '1997-10-01', 'Femenino', '3877777777'),
+('Leiva, Matias', '61111111', '1990-11-10', 'Masculino', '3888888888'),
+('Soria, Agustina', '61222222', '1992-12-15', 'Femenino', '3899999999'),
+('Villar, Ivan', '61333333', '1988-01-30', 'Masculino', NULL),
+('Bravo, Cecilia', '61444444', '1995-02-01', 'Femenino', '3901010101'),
+('Correa, Alan', '61555555', '1993-03-20', 'Masculino', '3911111111'),
+('Ojeda, Micaela', '61666666', '1991-04-07', 'Femenino', NULL),
+('Ledesma, Ariel', '61777777', '1989-05-11', 'Masculino', '3922222222'),
+('Medina, Julieta', '61888888', '1994-06-05', 'Femenino', '3933333333'),
+('Silveyra, Franco', '61999999', '1996-07-08', 'Masculino', NULL),
+('Barrios, Daniela', '62010101', '1997-08-01', 'Femenino', '3944444444');
+
 
 /* Lote de Inserción Invocando a los Procedimientos Creados
 Este script demuestra la modularidad y reutilización del código encapsulado en el procedimiento almacenado.*/
 
 -- SCRIPT LOTE B: Inserción invocando el procedimiento almacenado
-EXEC SP_InsertarPaciente 
-    @p_nombreCompleto = 'Castro, Hector',
-    @p_dni = '30333444',
-    @p_fechaNacimiento = '20050101',
-    @p_sexo = 'Masculino',
-    @p_contacto = '3624001122';
-
-EXEC SP_InsertarPaciente 
-    @p_nombreCompleto = 'Silva, Romina',
-    @p_dni = '40444555',
-    @p_fechaNacimiento = '19750808',
-    @p_sexo = 'Femenino',
-    @p_contacto = NULL; -- Contacto opcional
+EXEC SP_InsertarPaciente 'Molina, Esteban', '70111111', '1990-01-10', 'Masculino', '4011111111';
+EXEC SP_InsertarPaciente 'Rivas, Noelia', '70222222', '1992-02-15', 'Femenino', '4022222222';
+EXEC SP_InsertarPaciente 'Cano, Federico', '70333333', '1988-03-30', 'Masculino', NULL;
+EXEC SP_InsertarPaciente 'Bustos, Melina', '70444444', '1995-04-01', 'Femenino', '4033333333';
+EXEC SP_InsertarPaciente 'Sanchez, Bruno', '70555555', '1993-05-20', 'Masculino', '4044444444';
+EXEC SP_InsertarPaciente 'Luna, Carla', '70666666', '1991-06-07', 'Femenino', NULL;
+EXEC SP_InsertarPaciente 'Ponce, Diego', '70777777', '1989-07-11', 'Masculino', '4055555555';
+EXEC SP_InsertarPaciente 'Ayala, Mariana', '70888888', '1994-08-05', 'Femenino', '4066666666';
+EXEC SP_InsertarPaciente 'Ruiz, Tomas', '70999999', '1996-09-08', 'Masculino', NULL;
+EXEC SP_InsertarPaciente 'Farias, Florencia', '71010101', '1997-10-01', 'Femenino', '4077777777';
+EXEC SP_InsertarPaciente 'Leiva, Matias', '71111111', '1990-11-10', 'Masculino', '4088888888';
+EXEC SP_InsertarPaciente 'Soria, Agustina', '71222222', '1992-12-15', 'Femenino', '4099999999';
+EXEC SP_InsertarPaciente 'Villar, Ivan', '71333333', '1988-01-30', 'Masculino', NULL;
+EXEC SP_InsertarPaciente 'Bravo, Cecilia', '71444444', '1995-02-01', 'Femenino', '4101010101';
+EXEC SP_InsertarPaciente 'Correa, Alan', '71555555', '1993-03-20', 'Masculino', '4111111111';
+EXEC SP_InsertarPaciente 'Ojeda, Micaela', '71666666', '1991-04-07', 'Femenino', NULL;
+EXEC SP_InsertarPaciente 'Ledesma, Ariel', '71777777', '1989-05-11', 'Masculino', '4122222222';
+EXEC SP_InsertarPaciente 'Medina, Julieta', '71888888', '1994-06-05', 'Femenino', '4133333333';
+EXEC SP_InsertarPaciente 'Silveyra, Franco', '71999999', '1996-07-08', 'Masculino', NULL;
+EXEC SP_InsertarPaciente 'Barrios, Daniela', '72010101', '1997-08-01', 'Femenino', '4144444444';
 
 
 /* Modificación y Eliminación con Procedimientos. Realizar UPDATE invocando el procedimiento
