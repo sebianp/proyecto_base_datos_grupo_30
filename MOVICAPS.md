@@ -219,7 +219,8 @@ Se verificó el comportamiento de ambos usuarios al intentar leer el contenido d
 ```
 EXECUTE AS USER = 'mantenimiento';
 SELECT p.nombreCompleto, p.dni, p.fechaNacimiento, p.sexo, p.contacto
-FROM dbo.Paciente p;```
+FROM dbo.Paciente p;
+```
 Siendo el resultado el siguiente error:
 ```
 The SELECT permission was denied on the object 'Paciente', database 'PROYECTO_MOVICAPS', schema 'dbo'.
