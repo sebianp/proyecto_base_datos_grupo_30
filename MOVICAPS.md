@@ -229,6 +229,9 @@ FROM dbo.Paciente p;
 ```
 La consulta se ejecutó correctamente, mostrando los datos de la tabla.
 
+Se puede concluir que el usuario mantenimiento no pudo acceder a la tabla Paciente porque no pertenece al rol de lectura. 
+
+El usuario auditor, al ser miembro del rol lectorAuditor, sí pudo consultar la información.
 
 
 
