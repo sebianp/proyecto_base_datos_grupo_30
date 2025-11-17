@@ -39,7 +39,6 @@ CREATE TABLE UnidadMovil (
     patente VARCHAR(20) NULL,
     idTipo INT NOT NULL,
     capacidadDiaria INT,
-	id_ubicacion INT,
     CONSTRAINT PK_UnidadMovil PRIMARY KEY (idUnidad),
 	CONSTRAINT FK_Unidad_Tipo FOREIGN KEY (idTipo) REFERENCES TipoUnidadMovil(idTipo),
     CONSTRAINT UQ_UnidadMovil_Patente UNIQUE (patente),
